@@ -12,15 +12,6 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-def setup_app(app):
-    # All your initialization code
-    if not(os.path.isfile('ipocache.db')):
-       log("DB not exist crawling data and creating DB")
-       IPOCrawler.refreshData()
-       log("DONE: DB not exist crawling data and creating DB")
-       
-setup_app(app)
-
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -127,6 +118,15 @@ def formResponse(text):
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
+    
+def setup_app(app):
+    # All your initialization code
+    if not(os.path.isfile('ipocache.db')):
+       log("DB not exist crawling data and creating DB")
+       IPOCrawler.refreshData()
+       log("DONE: DB not exist crawling data and creating DB")
+       
+setup_app(app)
 
 
 if __name__ == '__main__':
