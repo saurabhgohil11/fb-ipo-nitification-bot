@@ -18,7 +18,7 @@ def setup_app(app):
        log(platform.python_version())
        log("DB not exist crawling data and creating DB")
        IPOCrawler.refreshData()
-       log(DBHelper.getLast10IPO()
+       log(DBHelper.getLast10IPO())
        
 setup_app(app)
 
