@@ -28,7 +28,7 @@ def refreshData():
             datatoInsert = col.get_text().upper()
             try:
                 d = datetime.strptime(datatoInsert, "%b %d, %Y")
-                datatoInsert = d.date()
+                datatoInsert = d.strftime('%Y-%m-%d')
             except:
                 #dummt stmnt
                 a=10; 
