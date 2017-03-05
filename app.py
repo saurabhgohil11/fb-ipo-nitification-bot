@@ -86,12 +86,12 @@ def formResponse(text):
     response = ""
     if msg_type==MessageParser.GREETING_MSG:
         response = '''Hello, Welcome to IPO Notifier. 
-        We will message you on messenger when ever a new IPO is going to be listed on BSE or NSE. Do not delete this chat if you want to get notified. If you want to remove your self from our notification list type 'Remove me'.
-        Use Following Keywords for your task.
-        1.Current IPO
-        2. Today's IPO, IPO Of the Day
-        3. IPO List
-        4. ipo 'IPO_NAME/Company name').'''
+We will message you on messenger when ever a new IPO is going to be listed on BSE or NSE. Do not delete this chat if you want to get notified. If you want to remove your self from our notification list type 'Remove me'.
+Use Following Keywords for your task.
+1.Current IPO
+2. Today's IPO, IPO Of the Day
+3. IPO List
+4. ipo 'IPO_NAME/Company name').'''
         
     elif msg_type==MessageParser.UNKNOWN_MSG:
         response = "I didn't understand that. Try typing HI :P ."
