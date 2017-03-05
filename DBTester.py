@@ -17,12 +17,12 @@ if not(os.path.isfile('ipocache.db')):
     log("DONE: DB not exist crawling data and creating DB")
 
 log("----------Testing Today's IPO-------------")
-log(formResponse("today"))
+log(app.formResponse("today"))
 log("----------Testing Music IPO-------------")
-log(formResponse("IPO MUSIC"))
+log(app.formResponse("IPO MUSIC"))
 log("----------Testing Current IPO-------------")
-log(formResponse("current"))
+log(app.formResponse("current"))
 log("----------Testing 10 IPO-------------")
-log(formResponse("list"))
+log(app.formResponse("list"))
 
 print "End DBTester"
