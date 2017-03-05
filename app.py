@@ -127,4 +127,5 @@ def setup_app(app):
        log("DONE: DB not exist crawling data and creating DB")
 
 if __name__ == '__main__':
+    setup_app(app)
     app.run(debug=True)

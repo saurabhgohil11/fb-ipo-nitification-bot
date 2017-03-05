@@ -86,11 +86,13 @@ def executeSelect(select_stmt):
 def dropIPOTable():
     conn = sqlite3.connect('ipocache.db')
     conn.execute("DROP TABLE IF EXISTS IPOLIST")
+    conn.close()
     log("Table removed IPO")
     
 def dropIPOTable():
     conn = sqlite3.connect('ipocache.db')
     conn.execute("DROP TABLE IF EXISTS USERLIST")
+    conn.close()
     log("Table removed user")
     
 def log(message):  # simple wrapper for logging to stdout on heroku
