@@ -37,5 +37,4 @@ def parse(text):
 	
 def parseIPOName(text):
 	text=text.upper()
-	i = text.find("IPO")
-	return text[i:len(text)]
+	return text[3:len(text)].strip()

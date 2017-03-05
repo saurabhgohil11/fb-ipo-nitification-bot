@@ -101,7 +101,7 @@ def formResponse(text):
         response = list.__str__()
         
     elif msg_type==MessageParser.ALL_IPO:
-        list = IPOHelper.getCurrentIPO()
+        list = IPOHelper.getLast10IPO()
         response = list.__str__()
         
     elif msg_type==MessageParser.IPO_NAME:
@@ -125,6 +125,8 @@ def setup_app(app):
        log("DB not exist crawling data and creating DB")
        IPOCrawler.refreshData()
        log("DONE: DB not exist crawling data and creating DB")
+       
+setup_app(app)
 
 if __name__ == '__main__':
     setup_app(app)

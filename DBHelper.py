@@ -53,7 +53,7 @@ def insertUser(user_id):
 
 
 def getLast10IPO():
-    select_stmt = "SELECT * FROM IPOLIST"
+    select_stmt = "SELECT * FROM IPOLIST ORDER BY OPEN_DATE DESC LIMIT 10"
     return executeSelect(select_stmt)
     
 #Provide IPO Name in UPPER CASE ONLY    
