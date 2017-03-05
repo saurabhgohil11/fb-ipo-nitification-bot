@@ -83,13 +83,13 @@ def executeSelect(select_stmt):
     conn.close()
     return list
     
-def dropIPOTable():
+def dropTableIPO():
     conn = sqlite3.connect('ipocache.db')
     conn.execute("DROP TABLE IF EXISTS IPOLIST")
     conn.close()
     log("Table removed IPO")
     
-def dropIPOTable():
+def dropTableUser():
     conn = sqlite3.connect('ipocache.db')
     conn.execute("DROP TABLE IF EXISTS USERLIST")
     conn.close()
