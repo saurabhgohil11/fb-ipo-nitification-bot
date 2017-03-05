@@ -2,6 +2,7 @@ import DBHelper
 import os
 import IPOHelper
 import app
+import sys
 
 print "start DBTester"
 def log(message):  # simple wrapper for logging to stdout on heroku
