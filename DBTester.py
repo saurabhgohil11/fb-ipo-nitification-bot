@@ -3,7 +3,7 @@ import os
 import IPOHelper
 import app
 
-
+print "start DBTester"
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
@@ -23,3 +23,5 @@ log("----------Testing Current IPO-------------")
 log(formResponse("current"))
 log("----------Testing 10 IPO-------------")
 log(formResponse("list"))
+
+print "End DBTester"
