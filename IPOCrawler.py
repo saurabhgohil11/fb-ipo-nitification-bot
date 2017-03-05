@@ -30,7 +30,8 @@ def refreshData():
                 d = datetime.strptime(datatoInsert, "%b %d, %Y")
                 datatoInsert = d.date()
             except:
-                log("not a date")
+                #dummt stmnt
+                a=10; 
             rowdata.append(datatoInsert)
         rowdata.append(link)
         alldata.append(rowdata)
