@@ -9,8 +9,7 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
 
-DBHelper.dropTableIPO()
-DBHelper.dropTableUser()
+IPOCrawler.refreshData()
 if not(os.path.isfile('ipocache.db')):
     log("DB not exist crawling data and creating DB")
     IPOCrawler.refreshData()
