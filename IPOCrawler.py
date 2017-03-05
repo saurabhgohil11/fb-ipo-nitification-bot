@@ -1,4 +1,4 @@
-from urllib.request import Request, urlopen
+from urllib2 import Request, urlopen
 from bs4 import BeautifulSoup
 import DBHelper
 import sys
