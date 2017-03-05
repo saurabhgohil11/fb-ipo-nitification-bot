@@ -15,9 +15,9 @@ app = Flask(__name__)
 def setup_app(app):
     # All your initialization code
     if not(os.path.isfile('ipocache.db')):
-       log(platform.python_version())
        log("DB not exist crawling data and creating DB")
        IPOCrawler.refreshData()
+       log("DONE: DB not exist crawling data and creating DB")
        
 setup_app(app)
 
