@@ -25,13 +25,13 @@ def refreshData():
         link = row.find('a').get('href')
         rowdata = []
         for col in cols:
-            datatoInsert = col.get_text()
+            datatoInsert = col.get_text().upper()
             try:
                 d = datetime.strptime(datatoInsert, "%b %d, %Y")
                 datatoInsert = d.date()
             except:
                 log("not a date")
-            rowdata.append(datatoInsert.upper())
+            rowdata.append(datatoInsert)
         rowdata.append(link)
         alldata.append(rowdata)
         
