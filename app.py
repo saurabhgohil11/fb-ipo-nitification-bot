@@ -166,7 +166,7 @@ def generateJSONResposneForIPO(ipoData):
     closeDate = DateUtils.formatReadable(ipoData[2])
     price = ipoData[3]
     infoURL = ipoData[6]
-    messageStr = ipoName + '\nOpen:' + openDate + '\nClose:' + closeDate + '\nPrice:' + price
+    messageStr = ipoName + '\nOpen : ' + openDate + '\nClose : ' + closeDate + '\nPrice : ' + price
     
     return json.dumps({
         "attachment":{
