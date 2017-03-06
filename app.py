@@ -5,6 +5,7 @@ import IPOCrawler
 import MessageParser
 import IPOHelper
 import DBHelper
+import DateUtils
 
 import requests
 from flask import Flask, request
@@ -161,8 +162,8 @@ def generateJSONResposneForText(responsemsg):
 
 def generateJSONResposneForIPO(ipoData):
     ipoName = ipoData[0]
-    openDate = ipoData[1]
-    closeDate = ipoData[2]
+    openDate = DateUtils.formatReadable(ipoData[1])
+    closeDate = DateUtils.formatReadable(ipoData[2])
     price = ipoData[3]
     infoURL = ipoData[6]
     messageStr = ipoName + '\nOpen:' + openDate + '\nClose:' + closeDate + '\nPrice:' + price
