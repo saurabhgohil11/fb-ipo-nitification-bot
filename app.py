@@ -5,7 +5,6 @@ import IPOCrawler
 import MessageParser
 import IPOHelper
 import DBHelper
-import platform
 
 import requests
 from flask import Flask, request
@@ -43,8 +42,9 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
                     DBHelper.insertUser(sender_id)
-                    response_text = formResponse(message_text)
-                    send_message(sender_id, response_text)
+                    responseList = formResponse(message_text)
+                    for text in responseList:
+                        send_message(sender_id, text)
 
                 if messaging_event.get("delivery"):  # delivery confirmation
                     pass
@@ -58,9 +58,9 @@ def webhook():
     return "ok", 200
 
 
-def send_message(recipient_id, message_text):
+def send_message(recipient_id, message):
 
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message_text))
+    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -73,7 +73,7 @@ def send_message(recipient_id, message_text):
             "id": recipient_id
         },
         "message": {
-            "text": message_text
+            message
         }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
@@ -83,37 +83,90 @@ def send_message(recipient_id, message_text):
 
 def formResponse(text):
     msg_type = MessageParser.parse(text)
-    response = ""
+    responseList = []
     if msg_type==MessageParser.GREETING_MSG:
-        response = '''Hello, Welcome to IPO Notifier. 
-We will message you on messenger when ever a new IPO is going to be listed on BSE or NSE. Do not delete this chat if you want to get notified. If you want to remove your self from our notification list type 'Remove me'.
-Use Following Keywords for your task.
-1.Current IPO
+        responseList.append('''"text" : "Hello, Welcome to IPO Notifier. 
+We will message you on when ever a new IPO is going to be listed on BSE or NSE. Do not delete this chat if you want to get notified."''')
+        responseList.append('''"text" :
+"Use Following Keywords for your task.
+1. Current IPO
 2. Today's IPO, IPO Of the Day
 3. IPO List
-4. ipo 'IPO_NAME/Company name').'''
+4. ipo 'Company name'."''')
         
     elif msg_type==MessageParser.UNKNOWN_MSG:
-        response = "I didn't understand that. Try typing HI :P ."
+        responseList.append('''"text" :"I didn't understand that. Try typing Help :P ."''')
+    
+    elif msg_type==MessageParser.HELP:
+        responseList.append('''"text" :"
+Use Following Keywords for your task.
+1. Current IPO
+2. Today's IPO, IPO Of the Day
+3. IPO List
+4. ipo 'Company name'."''')
+        responseList.append('''"text" :"If you don't want to unsubscribe type Remove Me and delete this chat."''')
         
     elif msg_type==MessageParser.CURRENT_OR_UPCOMING_IPO:
-        list = IPOHelper.getCurrentIPO()
-        response = list.__str__()
+        ipolist = IPOHelper.getCurrentIPO()
+        for ipoData in ipolist:
+            prettyFormat = generatePrettyResposne(ipoData)
+            responseList.append(prettyFormat)
         
     elif msg_type==MessageParser.ALL_IPO:
-        list = IPOHelper.getLast10IPO()
-        response = list.__str__()
+        ipolist = IPOHelper.getLast10IPO()
+        for ipoData in ipolist:
+            prettyFormat = generatePrettyResposne(ipoData)
+            responseList.append(prettyFormat)
         
     elif msg_type==MessageParser.IPO_NAME:
         ipoName = MessageParser.parseIPOName(text)
-        list = IPOHelper.getIPObyName(ipoName)
-        response = list.__str__()
+        ipolist = IPOHelper.getIPObyName(ipoName)
+        if not ipoName:
+            ipolist = IPOHelper.getCurrentIPO() 
+        
+        for ipoData in ipolist:
+            prettyFormat = generatePrettyResposne(ipoData)
+            responseList.append(prettyFormat)
     
     elif msg_type==MessageParser.TODAYS_IPO:
-        list = IPOHelper.getTodaysIPO()
-        response = list.__str__()
-    log(response)
-    return response
+        ipolist = IPOHelper.getTodaysIPO()
+        for ipoData in ipolist:
+            prettyFormat = generatePrettyResposne(ipoData)
+            responseList.append(prettyFormat)
+
+    return responseList
+    
+
+def notifyNewIPO(ipoData):
+    subscriberList = DBHelper.getUserIdList("1")
+    for user in subscriberList:
+        prettyFormat = generatePrettyResposne(ipoData)
+        send_message(user, prettyFormat)
+    
+def generatePrettyResposne(ipoData):
+    ipoName = ipoData[0]
+    openDate = ipoData[1]
+    closeDate = ipoData[2]
+    price = ipoData[3]
+    infoURL = ipoData[4]
+    
+    prettyFormat = '\
+    "attachment":{\
+        "type":"template",\
+        "payload":{\
+            "template_type":"button",\
+            "text":"%s \nOpen:%s \nClose:%s \nPrice:%s",\
+            "buttons":[\
+                {\
+                  "type":"web_url",\
+                  "url":"%s",\
+                  "title":"More Info"\
+                }\
+            ]\
+        }\
+    }\
+    ' % (ipoName,openDate,closeDate,price,infoURL)
+    return prettyFormat
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
@@ -122,11 +175,10 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 def setup_app(app):
     # All your initialization code
     if not(os.path.isfile('ipocache.db')):
-       log("DB not exist crawling data and creating DB")
-       IPOCrawler.refreshData()
-       log("DONE: DB not exist crawling data and creating DB")
-       
-setup_app(app)
+        log("DB not exist crawling data and creating DB")
+        IPOCrawler.refreshData()
+        log("DONE: DB not exist crawling data and creating DB")
+
 
 if __name__ == '__main__':
     setup_app(app)

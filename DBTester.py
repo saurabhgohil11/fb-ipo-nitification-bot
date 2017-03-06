@@ -24,3 +24,5 @@ def startTest():
     log(app.formResponse("list"))
     
     log("End DBTester")
+    
+startTest()

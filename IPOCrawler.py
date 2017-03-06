@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import DBHelper
 import sys
 from datetime import datetime
+import IPOHelper
 
 req = Request("http://www.chittorgarh.com/ipo/ipo_list.asp", headers={'User-Agent': 'Mozilla/5.0'})
 
@@ -41,7 +42,7 @@ def refreshData():
         log(row)
         
     DBHelper.createTable()
-    DBHelper.insertIPO(alldata)
+    IPOHelper.insertNewIPOs(alldata)
     
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)

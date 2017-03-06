@@ -3,7 +3,7 @@ import sys
 
 def createTable():
     conn = sqlite3.connect('ipocache.db')
-    a = conn.execute('''CREATE TABLE if not exists IPOLIST
+    conn.execute('''CREATE TABLE if not exists IPOLIST
        (
            COMPANY TEXT  NOT NULL,
            OPEN_DATE         TEXT ,
@@ -14,7 +14,7 @@ def createTable():
            LINK                 TEXT,
            PRIMARY KEY (COMPANY, OPEN_DATE)
        );''')
-    b = conn.execute('''CREATE TABLE if not exists USERLIST
+    conn.execute('''CREATE TABLE if not exists USERLIST
        (
            USER_ID TEXT  NOT NULL,
            ADD_DATA1         TEXT ,
@@ -29,15 +29,19 @@ def createTable():
 
     conn.close()
     
-def insertIPO(listOfIPO):
+def hasIPO(ipoData):
+    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE = '%s' OR CLOSE_DATE = '%s'" % (ipoData[0], ipoData[1])
+    return executeSelect(select_stmt)
+    
+def insertIPO(ipo):
     conn = sqlite3.connect('ipocache.db')
     c = conn.cursor()
     try:
-        c.executemany('INSERT INTO IPOLIST VALUES (?,?,?,?,?,?,?)', listOfIPO)
+        c.execute('INSERT INTO IPOLIST VALUES (?,?,?,?,?,?,?)', ipo)
         conn.commit()
-        log("ipo inserted successfully");
+        log("ipo "+ ipo[0] +"inserted successfully");
     except sqlite3.IntegrityError:
-        log("trying to add duplicates")
+        log("trying to add duplicate ipo")
     conn.close()
     
 def insertUser(user_id):
@@ -79,9 +83,9 @@ def executeSelect(select_stmt):
     conn = sqlite3.connect('ipocache.db')
     c = conn.cursor()
     c.execute(select_stmt)
-    list = c.fetchall()
+    datalist = c.fetchall()
     conn.close()
-    return list
+    return datalist
     
 def dropTableIPO():
     conn = sqlite3.connect('ipocache.db')
