@@ -138,8 +138,9 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
     
+    #gives list of running ipo
     elif msg_type==MessageParser.TODAYS_IPO:
-        ipolist = IPOHelper.getTodaysIPO()
+        ipolist = IPOHelper.getRunningIPO()
         for ipoData in ipolist:
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
@@ -163,7 +164,7 @@ def generateJSONResposneForIPO(ipoData):
     openDate = ipoData[1]
     closeDate = ipoData[2]
     price = ipoData[3]
-    infoURL = ipoData[4]
+    infoURL = ipoData[6]
     messageStr = ipoName + '\nOpen:' + openDate + '\nClose:' + closeDate + '\nPrice:' + price
     
     return json.dumps({

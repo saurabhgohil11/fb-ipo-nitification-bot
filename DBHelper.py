@@ -74,6 +74,9 @@ def getIPOgreaterThanDate(date):
     select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE >= '%s' OR CLOSE_DATE >= '%s'" % (date,date)
     return executeSelect(select_stmt)
     
+def getIPOwithinDate(date):
+    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE >= '%s' OR CLOSE_DATE <= '%s'" % (date,date)
+    return executeSelect(select_stmt)
 
 def getUserIdList(active):
     select_stmt = "SELECT USER_ID FROM USERLIST WHERE IS_ACTIVE = '%s'" % (active)

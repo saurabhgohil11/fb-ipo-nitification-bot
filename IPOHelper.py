@@ -9,6 +9,11 @@ def getTodaysIPO():
     sa_time = datetime.now(asia_culcutta)
     today_date=sa_time.strftime('%Y-%m-%d')
     return DBHelper.getIPObyDate(today_date);
+
+def getRunningIPO():
+    sa_time = datetime.now(asia_culcutta)
+    today_date=sa_time.strftime('%Y-%m-%d')
+    return DBHelper.getIPOwithinDate(today_date);
     
 def getIPObyName(ipoName):
     return DBHelper.getIPO(ipoName)
