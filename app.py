@@ -8,7 +8,6 @@ import DBHelper
 
 import requests
 from flask import Flask, request
-from _msi import OpenDatabase
 
 app = Flask(__name__)
 
