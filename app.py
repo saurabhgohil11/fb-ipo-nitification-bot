@@ -8,6 +8,7 @@ import DBHelper
 
 import requests
 from flask import Flask, request
+from _msi import OpenDatabase
 
 app = Flask(__name__)
 
@@ -98,16 +99,23 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
         responseList.append(jsonFormat)
         
     elif msg_type==MessageParser.UNKNOWN_MSG:
-        responseList.append('''"text" :"I didn't understand that. Try typing Help :P ."''')
+        message1 = "I didn't understand that. Try typing Help :P ."
+        jsonFormat = generateJSONResposneForText(message1)
+        responseList.append(jsonFormat)
     
     elif msg_type==MessageParser.HELP:
-        responseList.append('''"text" :"
-Use Following Keywords for your task.
+        
+        message1 = '''Use Following Keywords for your task.
 1. Current IPO
 2. Today's IPO, IPO Of the Day
 3. IPO List
-4. ipo 'Company name'."''')
-        responseList.append('''"text" :"If you don't want to unsubscribe type Remove Me and delete this chat."''')
+4. ipo 'Company name'.'''
+        message2 = "If you don't want to unsubscribe type Remove Me and delete this chat."
+        jsonFormat = generateJSONResposneForText(message1)
+        responseList.append(jsonFormat)
+        jsonFormat = generateJSONResposneForText(message2)
+        responseList.append(jsonFormat)
+               
         
     elif msg_type==MessageParser.CURRENT_OR_UPCOMING_IPO:
         ipolist = IPOHelper.getCurrentIPO()
@@ -157,24 +165,25 @@ def generateJSONResposneForIPO(ipoData):
     closeDate = ipoData[2]
     price = ipoData[3]
     infoURL = ipoData[4]
+    messageStr = ipoName + '\nOpen:' + openDate + '\nClose:' + closeDate + '\nPrice:' + price
     
-    prettyFormat = '\
-    "attachment":{\
-        "type":"template",\
-        "payload":{\
-            "template_type":"button",\
-            "text":"%s \nOpen:%s \nClose:%s \nPrice:%s",\
-            "buttons":[\
-                {\
-                  "type":"web_url",\
-                  "url":"%s",\
-                  "title":"More Info"\
-                }\
-            ]\
-        }\
-    }\
-    ' % (ipoName,openDate,closeDate,price,infoURL)
-    return prettyFormat
+    return json.dumps({
+        "attachment":{
+            "type":"template",
+            "payload":{
+                "template_type":"button",
+                "text": messageStr,
+                "buttons":[
+                    {
+                      "type":"web_url",
+                      "url":infoURL,
+                      "title":"More Info"
+                    }
+                ]
+            }
+        }
+    })
+  
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
