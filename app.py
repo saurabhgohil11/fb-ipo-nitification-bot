@@ -72,9 +72,8 @@ def send_message(recipient_id, message):
         "recipient": {
             "id": recipient_id
         },
-        "message": {
+        "message": 
             json.loads(message)
-        }
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
@@ -85,14 +84,18 @@ def formResponse(text):
     msg_type = MessageParser.parse(text)
     responseList = []
     if msg_type==MessageParser.GREETING_MSG:
-        responseList.append('''"text" : "Hello, Welcome to IPO Notifier. 
-We will message you on when ever a new IPO is going to be listed on BSE or NSE. Do not delete this chat if you want to get notified."''')
-        responseList.append('''"text" :
-"Use Following Keywords for your task.
+        message1 = '''Hello, Welcome to IPO Notifier. 
+We will message you on when ever a new IPO is going to be listed on BSE or NSE. Do not delete this chat if you want to get notified.'''
+        
+        message2 = '''Use Following Keywords for your task.
 1. Current IPO
 2. Today's IPO, IPO Of the Day
 3. IPO List
-4. ipo 'Company name'."''')
+4. ipo 'Company name'.'''
+        jsonFormat = generateJSONResposneForText(message1)
+        responseList.append(jsonFormat)
+        jsonFormat = generateJSONResposneForText(message2)
+        responseList.append(jsonFormat)
         
     elif msg_type==MessageParser.UNKNOWN_MSG:
         responseList.append('''"text" :"I didn't understand that. Try typing Help :P ."''')
@@ -109,14 +112,14 @@ Use Following Keywords for your task.
     elif msg_type==MessageParser.CURRENT_OR_UPCOMING_IPO:
         ipolist = IPOHelper.getCurrentIPO()
         for ipoData in ipolist:
-            prettyFormat = generatePrettyResposne(ipoData)
-            responseList.append(prettyFormat)
+            jsonFormat = generateJSONResposneForIPO(ipoData)
+            responseList.append(jsonFormat)
         
     elif msg_type==MessageParser.ALL_IPO:
         ipolist = IPOHelper.getLast10IPO()
         for ipoData in ipolist:
-            prettyFormat = generatePrettyResposne(ipoData)
-            responseList.append(prettyFormat)
+            jsonFormat = generateJSONResposneForIPO(ipoData)
+            responseList.append(jsonFormat)
         
     elif msg_type==MessageParser.IPO_NAME:
         ipoName = MessageParser.parseIPOName(text)
@@ -125,14 +128,14 @@ Use Following Keywords for your task.
             ipolist = IPOHelper.getCurrentIPO() 
         
         for ipoData in ipolist:
-            prettyFormat = generatePrettyResposne(ipoData)
-            responseList.append(prettyFormat)
+            jsonFormat = generateJSONResposneForIPO(ipoData)
+            responseList.append(jsonFormat)
     
     elif msg_type==MessageParser.TODAYS_IPO:
         ipolist = IPOHelper.getTodaysIPO()
         for ipoData in ipolist:
-            prettyFormat = generatePrettyResposne(ipoData)
-            responseList.append(prettyFormat)
+            jsonFormat = generateJSONResposneForIPO(ipoData)
+            responseList.append(jsonFormat)
 
     return responseList
     
@@ -140,10 +143,15 @@ Use Following Keywords for your task.
 def notifyNewIPO(ipoData):
     subscriberList = DBHelper.getUserIdList("1")
     for user in subscriberList:
-        prettyFormat = generatePrettyResposne(ipoData)
+        prettyFormat = generateJSONResposneForIPO(ipoData)
         send_message(user, prettyFormat)
     
-def generatePrettyResposne(ipoData):
+def generateJSONResposneForText(responsemsg):
+    return json.dumps({
+        "text": responsemsg
+        })
+
+def generateJSONResposneForIPO(ipoData):
     ipoName = ipoData[0]
     openDate = ipoData[1]
     closeDate = ipoData[2]
