@@ -44,7 +44,12 @@ def refreshData():
     if not DBHelper.isTableExist():
         log("table not exists") 
         DBHelper.createTable()
-    
+    jsonFormat = app.generateJSONResposneForText("Damnn it is not working")
+    subscriberList = DBHelper.getUserIdList("1")
+    log("subs:"+subscriberList)
+    for user in subscriberList:
+        log("user is"+user)
+        app.send_message(user, jsonFormat)
     return IPOHelper.insertNewIPOs(alldata)
     
 def log(message):  # simple wrapper for logging to stdout on heroku
