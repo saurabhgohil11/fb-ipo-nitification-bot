@@ -79,7 +79,6 @@ def getIPOwithinDate(date,withOutBoundry):
     select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE <= '%s' AND CLOSE_DATE >= '%s'" % (date,date)
     if withOutBoundry:
         select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE < '%s' AND CLOSE_DATE > '%s'" % (date,date)
-    log("from today:"+select_stmt)
     return executeSelect(select_stmt)
 
 def getIPOgreaterThanDate(date):
