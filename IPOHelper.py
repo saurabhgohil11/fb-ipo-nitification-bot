@@ -8,8 +8,8 @@ def getOpeningTodayIPO():
 def getClosingTodayIPO():
     return DBHelper.getIPObycloseDate(DateUtils.getTodaysDate());
 
-def getRunningIPO():
-    return DBHelper.getRunningIPO(DateUtils.getTodaysDate());
+def getRunningIPO(withOutBoundry):
+    return DBHelper.getIPOwithinDate(DateUtils.getTodaysDate(),withOutBoundry);
     
 def getIPObyName(ipoName):
     return DBHelper.getIPO(ipoName)

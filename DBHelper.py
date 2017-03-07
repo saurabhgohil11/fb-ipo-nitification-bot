@@ -75,16 +75,14 @@ def getIPObycloseDate(date):
     select_stmt = "SELECT * FROM IPOLIST WHERE CLOSE_DATE = '%s'" % (date)
     return executeSelect(select_stmt)
 
-def getRunningIPO(date):
-    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE > '%s' OR CLOSE_DATE < '%s'" % (date,date)
+def getIPOwithinDate(date,withOutBoundry):
+    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE >= '%s' AND CLOSE_DATE <= '%s'" % (date,date)
+    if withOutBoundry:
+        select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE > '%s' AND CLOSE_DATE < '%s'" % (date,date)
     return executeSelect(select_stmt)
 
 def getIPOgreaterThanDate(date):
     select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE >= '%s' OR CLOSE_DATE >= '%s'" % (date,date)
-    return executeSelect(select_stmt)
-    
-def getIPOwithinDate(date):
-    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE >= '%s' OR CLOSE_DATE <= '%s'" % (date,date)
     return executeSelect(select_stmt)
 
 def getUserIdList(active):

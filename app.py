@@ -142,11 +142,17 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
     
     #gives list of running ipo
     elif msg_type==MessageParser.TODAYS_IPO:
-        ipolist = IPOHelper.getRunningIPO()
+        ipolist = []
+        ipolist.append(IPOHelper.getRunningIPO())
         for ipoData in ipolist:
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
 
+    if not responseList:
+        message1 = "Sorry, No Results Found."
+        jsonFormat = generateJSONResposneForText(message1)
+        responseList.append(jsonFormat)
+        
     return responseList
 
 
@@ -163,7 +169,7 @@ def generateJSONResposneForIPO(ipoData):
     price = ipoData[3]
     infoURL = ipoData[6]
     messageStr = ipoName + '\nOpen : ' + openDate + '\nClose : ' + closeDate + '\nPrice : ' + price
-    query = urllib.urlencode({'q': "IPO "+ipoName})
+    query = urllib.urlencode({'q': ipoName})
     googleURL = "http://www.google.com/search?%s" % query
     
     return json.dumps({

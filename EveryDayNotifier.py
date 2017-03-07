@@ -23,8 +23,8 @@ def start():
     if not list:
         notifyIPOswithMsg(closeList,"Hurry up!! Closing Today!")
         
-    #notify runningIPO
-    runningList = IPOHelper.getRunningIPO()
+    #notify runningIPO except opening closing
+    runningList = IPOHelper.getRunningIPO(True)
     if not list:
         notifyIPOswithMsg(runningList,"Hola, Have you subscribed these Yet?.")
         
