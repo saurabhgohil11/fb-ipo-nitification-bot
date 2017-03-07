@@ -12,9 +12,32 @@ import EveryDayNotifier
 import requests
 from flask import Flask, request
 
+import time
+import atexit
+
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.interval import IntervalTrigger
 
 app = Flask(__name__)
 
+
+@app.before_first_request
+def initialize():
+    log("init s")
+    scheduler = BackgroundScheduler()
+    scheduler.start()
+    scheduler.add_job(
+        func=startNotifier,
+        trigger=IntervalTrigger(seconds=20),
+        id='notifiying_job',
+        name='Notifiy every twenty seconds',
+        replace_existing=True)
+    # Shut down the scheduler when exiting the app
+    atexit.register(lambda: scheduler.shutdown())
+    
+def startNotifier():
+    log("startNotifier")
+    EveryDayNotifier.doNotify()
 
 @app.route('/', methods=['GET'])
 def verify():
@@ -206,9 +229,10 @@ def setup_app(app):
         log("DB not exist crawling data and creating DB")
         IPOCrawler.refreshData()
         log("DONE: DB not exist crawling data and creating DB")
-    EveryDayNotifier.start()
+    
     
 setup_app(app)
 
 if __name__ == '__main__':
+    EveryDayNotifier.start()
     app.run(debug=True)
