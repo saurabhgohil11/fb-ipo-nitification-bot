@@ -30,7 +30,7 @@ def createTable():
     conn.close()
     
 def hasIPO(ipoData):
-    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE = '%s' AND CLOSE_DATE = '%s'" % (ipoData[0], ipoData[1])
+    select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
     return executeSelect(select_stmt)
     
 def insertIPO(ipo):

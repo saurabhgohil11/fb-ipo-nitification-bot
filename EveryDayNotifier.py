@@ -16,6 +16,7 @@ def doNotify():
     log("notifing")
     #notify for new listings
     newIPOList = IPOCrawler.refreshData()
+    log("newIPOList:"+newIPOList)
     if not newIPOList:
         notifyIPOswithMsg(newIPOList,"Hey, Seems New IPOs are listed.")
         
@@ -31,7 +32,7 @@ def doNotify():
         
     #notify runningIPO except opening closing
     runningList = IPOHelper.getRunningIPO(True)
-    log("runningipo:"+runningList[0])
+    log("runningipo:"+runningList)
     if not list:
         notifyIPOswithMsg(runningList,"Hola, Have you subscribed these Yet?.")
         
