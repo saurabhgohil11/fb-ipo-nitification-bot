@@ -31,10 +31,16 @@ def createTable():
 
 def isTableExist():
     select_stmt = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='IPOLIST'"
-    return executeSelect(select_stmt)
+    conn = sqlite3.connect('ipocache.db')
+    c = conn.cursor()
+    c.execute(select_stmt)
+    a = c.fetchone()
+    conn.close()
+    log("isTableExist:"+a)
+    return a
 
 def hasIPO(ipoData):
-    select_stmt = "SELECT count(*) FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
+    select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
     return executeSelect(select_stmt)
     
 def insertIPO(ipo):
