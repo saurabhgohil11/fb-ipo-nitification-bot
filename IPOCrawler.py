@@ -49,7 +49,7 @@ def refreshData():
     subscriberList = DBHelper.getUserIdList("1")
     log('sending dummy msg')
     for user in subscriberList:
-        log("user is"+user)
+        log("user is"+user[0])
         app.send_message(user, jsonFormat)
     return IPOHelper.insertNewIPOs(alldata)
     
