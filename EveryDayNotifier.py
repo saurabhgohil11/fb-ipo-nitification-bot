@@ -6,7 +6,7 @@ from pytz import timezone
 
 asia_culcutta = timezone('Asia/Calcutta')
 
-def start():
+def doNotify():
     #notify for new listings
     newIPOList = IPOCrawler.refreshData()
     if not newIPOList:

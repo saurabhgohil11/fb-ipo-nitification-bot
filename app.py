@@ -223,7 +223,7 @@ class Config(object):
     SCHEDULER_API_ENABLED = True
 
 def startScheduler():
-    EveryDayNotifier.start()
+    EveryDayNotifier.doNotify()
 
 if __name__ == '__main__':
     app.config.from_object(Config())
