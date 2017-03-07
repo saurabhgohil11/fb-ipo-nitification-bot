@@ -20,22 +20,20 @@ from apscheduler.triggers.interval import IntervalTrigger
 
 app = Flask(__name__)
 
-scheduler = 0
+
 @app.before_first_request
 def initialize():
     log("init s")
-    if not scheduler:
-        log("schduling")
-        scheduler = BackgroundScheduler()
-        scheduler.start()
-        scheduler.add_job(
-            func=startNotifier,
-            trigger=IntervalTrigger(seconds=20),
-            id='notifiying_job',
-            name='Notifiy every twenty seconds',
-            replace_existing=True)
-        # Shut down the scheduler when exiting the app
-        atexit.register(lambda: scheduler.shutdown())
+    scheduler = BackgroundScheduler()
+    scheduler.start()
+    scheduler.add_job(
+        func=startNotifier,
+        trigger=IntervalTrigger(seconds=20),
+        id='notifiying_job',
+        name='Notifiy every twenty seconds',
+        replace_existing=True)
+    # Shut down the scheduler when exiting the app
+    atexit.register(lambda: scheduler.shutdown())
     
 def startNotifier():
     log("startNotifier")
