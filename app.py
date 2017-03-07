@@ -7,9 +7,11 @@ import IPOHelper
 import DBHelper
 import DateUtils
 import urllib
+import EveryDayNotifier.start()
 
 import requests
 from flask import Flask, request
+from flask_apscheduler import APScheduler
 
 app = Flask(__name__)
 
@@ -206,5 +208,27 @@ def setup_app(app):
         log("DONE: DB not exist crawling data and creating DB")
 setup_app(app)
 
+class Config(object):
+    
+    JOBS = [
+        {
+            'id': 'startScheduler',
+            'func': 'jobs:startScheduler',
+            'args': (1, 2),
+            'trigger': 'interval',
+            'seconds': 60
+        }
+    ]
+
+    SCHEDULER_API_ENABLED = True
+
+def startScheduler():
+    EveryDayNotifier.start()
+
 if __name__ == '__main__':
+    app.config.from_object(Config())
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()    
     app.run(debug=True)
+    
