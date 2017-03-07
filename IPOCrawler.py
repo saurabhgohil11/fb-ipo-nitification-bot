@@ -37,11 +37,13 @@ def refreshData():
         rowdata.append(link)
         alldata.append(rowdata)
         
-    log(indexheaders)
-    for row in alldata:
-        log(row)
-        
-    DBHelper.createTable()
+    #log(indexheaders)
+    #for row in alldata:
+    #    log(row)
+    
+    if not DBHelper.isTableExist():   
+        DBHelper.createTable()
+    
     return IPOHelper.insertNewIPOs(alldata)
     
 def log(message):  # simple wrapper for logging to stdout on heroku
