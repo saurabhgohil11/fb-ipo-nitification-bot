@@ -36,7 +36,7 @@ def isTableExist():
     c.execute(select_stmt)
     a = c.fetchone()
     conn.close()
-    log("isTableExist:"+a)
+    log("isTableExist:"+tuple(a.split(', ')))
     return a
 
 def hasIPO(ipoData):
