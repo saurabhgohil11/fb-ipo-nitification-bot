@@ -31,6 +31,7 @@ def doNotify():
         
     #notify runningIPO except opening closing
     runningList = IPOHelper.getRunningIPO(True)
+    log("runningipo:"+runningList[0])
     if not list:
         notifyIPOswithMsg(runningList,"Hola, Have you subscribed these Yet?.")
         
@@ -39,7 +40,9 @@ def doNotify():
 def notifyIPOswithMsg(IPOList,message1):
     jsonFormat = app.generateJSONResposneForText(message1)
     subscriberList = DBHelper.getUserIdList("1")
+    log("subs:"+subscriberList)
     for user in subscriberList:
+        log("user is"+user)
         app.send_message(user, jsonFormat)
         
     for ipoData in IPOList:
