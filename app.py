@@ -7,7 +7,7 @@ import IPOHelper
 import DBHelper
 import DateUtils
 import urllib
-import EveryDayNotifier.start()
+import EveryDayNotifier
 
 import requests
 from flask import Flask, request
