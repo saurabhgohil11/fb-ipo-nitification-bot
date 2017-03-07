@@ -1,4 +1,7 @@
 from datetime import datetime
+from pytz import timezone 
+
+asia_culcutta = timezone('Asia/Calcutta')
 
 def formatComparable(dateStr):
     try:
@@ -13,3 +16,8 @@ def formatReadable(dateStr):
         return d.strftime("%b %d, %Y")
     except:
         return dateStr
+    
+def getTodaysDate():
+    sa_time = datetime.now(asia_culcutta)
+    today_date=sa_time.strftime('%Y-%m-%d')
+    

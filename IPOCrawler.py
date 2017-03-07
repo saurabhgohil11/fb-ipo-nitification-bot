@@ -42,7 +42,7 @@ def refreshData():
         log(row)
         
     DBHelper.createTable()
-    IPOHelper.insertNewIPOs(alldata)
+    return IPOHelper.insertNewIPOs(alldata)
     
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)

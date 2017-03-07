@@ -6,6 +6,7 @@ import MessageParser
 import IPOHelper
 import DBHelper
 import DateUtils
+from urllib2 import urlencode
 
 import requests
 from flask import Flask, request
@@ -147,13 +148,8 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
             responseList.append(jsonFormat)
 
     return responseList
-    
 
-def notifyNewIPO(ipoData):
-    subscriberList = DBHelper.getUserIdList("1")
-    for user in subscriberList:
-        prettyFormat = generateJSONResposneForIPO(ipoData)
-        send_message(user, prettyFormat)
+
     
 def generateJSONResposneForText(responsemsg):
     return json.dumps({
@@ -167,6 +163,8 @@ def generateJSONResposneForIPO(ipoData):
     price = ipoData[3]
     infoURL = ipoData[6]
     messageStr = ipoName + '\nOpen : ' + openDate + '\nClose : ' + closeDate + '\nPrice : ' + price
+    query = urlencode({'q': "IPO "+ipoName})
+    googleURL = "http://www.google.com/search?%s" % query
     
     return json.dumps({
         "attachment":{
@@ -179,12 +177,17 @@ def generateJSONResposneForIPO(ipoData):
                       "type":"web_url",
                       "url":infoURL,
                       "title":"More Info"
-                    }
+                    },
+                    {
+                      "type":"web_url",
+                      "url":googleURL,
+                      "title":"Google It!"
+                    },       
                 ]
             }
         }
     })
-  
+
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)

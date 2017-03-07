@@ -66,8 +66,17 @@ def getIPO(ipoName):
     return executeSelect(select_stmt)
     
 #date fore mate 2017-12-30
-def getIPObyDate(date):
-    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE = '%s' OR CLOSE_DATE = '%s'" % (date, date)
+def getIPObyopenDate(date):
+    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE = '%s'" % (date)
+    return executeSelect(select_stmt)
+
+#date fore mate 2017-12-30
+def getIPObycloseDate(date):
+    select_stmt = "SELECT * FROM IPOLIST WHERE CLOSE_DATE = '%s'" % (date)
+    return executeSelect(select_stmt)
+
+def getRunningIPO(date):
+    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE > '%s' OR CLOSE_DATE < '%s'" % (date,date)
     return executeSelect(select_stmt)
 
 def getIPOgreaterThanDate(date):

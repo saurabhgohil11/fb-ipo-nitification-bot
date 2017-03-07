@@ -1,19 +1,15 @@
 import DBHelper
-from datetime import datetime
-from pytz import timezone 
-import app
+import DateUtils
 
-asia_culcutta = timezone('Asia/Calcutta')
+def getOpeningTodayIPO():
+    
+    return DBHelper.getIPObycloseDate(DateUtils.getTodaysDate());
 
-def getTodaysIPO():
-    sa_time = datetime.now(asia_culcutta)
-    today_date=sa_time.strftime('%Y-%m-%d')
-    return DBHelper.getIPObyDate(today_date);
+def getClosingTodayIPO():
+    return DBHelper.getIPObycloseDate(DateUtils.getTodaysDate());
 
 def getRunningIPO():
-    sa_time = datetime.now(asia_culcutta)
-    today_date=sa_time.strftime('%Y-%m-%d')
-    return DBHelper.getIPOwithinDate(today_date);
+    return DBHelper.getRunningIPO(DateUtils.getTodaysDate());
     
 def getIPObyName(ipoName):
     return DBHelper.getIPO(ipoName)
@@ -22,15 +18,17 @@ def getIPObyDate(date):
     return DBHelper.getIPO(date)
     
 def getCurrentIPO():
-    sa_time = datetime.now(asia_culcutta)
-    today_date=sa_time.strftime('%Y-%m-%d')
-    return DBHelper.getIPOgreaterThanDate(today_date)
+    return DBHelper.getIPOgreaterThanDate(DateUtils.getTodaysDate())
     
 def getLast10IPO():
     return DBHelper.getLast10IPO()
 
 def insertNewIPOs(ipoList):
+    newIPOList = []
     for x in ipoList:
         if not DBHelper.hasIPO(x):
             DBHelper.insertIPO(x)
-            app.notifyNewIPO(x)
+            newIPOList.append(x)
+    
+    return newIPOList
+
