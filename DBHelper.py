@@ -95,8 +95,11 @@ def getIPOgreaterThanDate(date):
     return executeSelect(select_stmt)
 
 def getUserIdList(active):
+    log("get user id")
     select_stmt = "SELECT USER_ID FROM USERLIST WHERE IS_ACTIVE = '%s'" % (active)
-    return executeSelect(select_stmt)
+    list = executeSelect(select_stmt)
+    log(list)
+    return list
 
 def executeSelect(select_stmt):
     conn = sqlite3.connect('ipocache.db')
