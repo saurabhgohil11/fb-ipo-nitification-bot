@@ -47,7 +47,7 @@ def refreshData():
         DBHelper.createTable()
     jsonFormat = app.generateJSONResposneForText("Damnn it is not working")
     subscriberList = DBHelper.getUserIdList("1")
-    log("subs:"+subscriberList)
+    log('sending dummy msg')
     for user in subscriberList:
         log("user is"+user)
         app.send_message(user, jsonFormat)
