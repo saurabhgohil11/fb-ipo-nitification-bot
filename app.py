@@ -6,7 +6,7 @@ import MessageParser
 import IPOHelper
 import DBHelper
 import DateUtils
-from urllib2 import urlencode
+import urllib
 
 import requests
 from flask import Flask, request
@@ -163,7 +163,7 @@ def generateJSONResposneForIPO(ipoData):
     price = ipoData[3]
     infoURL = ipoData[6]
     messageStr = ipoName + '\nOpen : ' + openDate + '\nClose : ' + closeDate + '\nPrice : ' + price
-    query = urlencode({'q': "IPO "+ipoName})
+    query = urllib.urlencode({'q': "IPO "+ipoName})
     googleURL = "http://www.google.com/search?%s" % query
     
     return json.dumps({
