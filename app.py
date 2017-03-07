@@ -201,8 +201,7 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     sys.stdout.flush()
     
 def setup_app(app):
-    # All your initialization code
-    
+    # All your initialization code 
     if not(os.path.isfile('ipocache.db')):
         log("DB not exist crawling data and creating DB")
         IPOCrawler.refreshData()

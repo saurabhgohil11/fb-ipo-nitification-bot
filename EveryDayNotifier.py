@@ -16,7 +16,10 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 def start():
     log("start notifier")
-    schedule.every(1).minutes.do(doNotify)
+    schedule.every(2).minutes.do(doNotify)
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
     
 def doNotify():
     log("notifing")
@@ -40,6 +43,7 @@ def doNotify():
     if not list:
         notifyIPOswithMsg(runningList,"Hola, Have you subscribed these Yet?.")
         
+
 
 def notifyIPOswithMsg(IPOList,message1):
     jsonFormat = app.generateJSONResposneForText(message1)
