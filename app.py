@@ -25,7 +25,7 @@ app = Flask(__name__)
 def initialize():
     log("init s")
     scheduler = BackgroundScheduler()
-    scheduler.start()
+    #scheduler.start()
     scheduler.add_job(
         func=startNotifier,
         trigger=IntervalTrigger(seconds=20),
