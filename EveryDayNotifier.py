@@ -8,10 +8,17 @@ import time
 
 asia_culcutta = timezone('Asia/Calcutta')
 
+
+def log(message):  # simple wrapper for logging to stdout on heroku
+    print str(message)
+    sys.stdout.flush()
+
 def start():
+    log("start notifier")
     schedule.every(1).minutes.do(doNotify)
     
 def doNotify():
+    log("notifing")
     #notify for new listings
     newIPOList = IPOCrawler.refreshData()
     if not newIPOList:
