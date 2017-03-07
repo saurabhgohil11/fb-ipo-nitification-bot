@@ -113,7 +113,7 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
 2. Today's IPO, IPO Of the Day
 3. IPO List
 4. ipo 'Company name'.'''
-        message2 = "If you don't want to unsubscribe type Remove Me and delete this chat."
+        message2 = "To unsubscribe type Remove Me and delete this chat."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)
