@@ -40,7 +40,6 @@ def doNotify():
 def notifyIPOswithMsg(IPOList,message1):
     jsonFormat = app.generateJSONResposneForText(message1)
     subscriberList = DBHelper.getUserIdList("1")
-    log("subs:"+subscriberList)
     for user in subscriberList:
         log("user is"+user[0])
         app.send_message(user[0], jsonFormat)
