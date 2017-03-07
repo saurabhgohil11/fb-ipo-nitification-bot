@@ -213,16 +213,16 @@ class Config(object):
     JOBS = [
         {
             'id': 'startScheduler',
-            'func': 'jobs:startScheduler',
-            'args': (1, 2),
+            'func': startScheduler,
             'trigger': 'interval',
-            'seconds': 60
+            'seconds': 20
         }
     ]
 
     SCHEDULER_API_ENABLED = True
 
 def startScheduler():
+    log("schduledmsg")
     EveryDayNotifier.doNotify()
 
 if __name__ == '__main__':
