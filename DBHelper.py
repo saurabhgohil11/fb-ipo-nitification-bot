@@ -36,8 +36,7 @@ def isTableExist():
     c.execute(select_stmt)
     a = c.fetchone()
     conn.close()
-    log("isTableExist:"+str(a))
-    return a
+    return a[0]
 
 def hasIPO(ipoData):
     select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
