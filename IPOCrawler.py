@@ -50,7 +50,7 @@ def refreshData():
     log('sending dummy msg')
     for user in subscriberList:
         log("user is"+user[0])
-        app.send_message(user, jsonFormat)
+        app.send_message(user[0], jsonFormat)
     return IPOHelper.insertNewIPOs(alldata)
     
 def log(message):  # simple wrapper for logging to stdout on heroku
