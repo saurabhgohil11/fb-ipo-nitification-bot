@@ -142,8 +142,7 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
     
     #gives list of running ipo
     elif msg_type==MessageParser.TODAYS_IPO:
-        ipolist = []
-        ipolist.append(IPOHelper.getRunningIPO(False))
+        ipolist = IPOHelper.getRunningIPO(False)
         for ipoData in ipolist:
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
