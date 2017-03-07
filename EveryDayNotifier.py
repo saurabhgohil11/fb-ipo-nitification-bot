@@ -3,12 +3,14 @@ import IPOCrawler
 import IPOHelper
 import DBHelper
 from pytz import timezone
-import schedule
-import time
+from apscheduler.scheduler import Scheduler
+from datetime import date
 import sys
 
 asia_culcutta = timezone('Asia/Calcutta')
 
+sched = Scheduler()
+sched.start()
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
@@ -16,10 +18,7 @@ def log(message):  # simple wrapper for logging to stdout on heroku
 
 def start():
     log("start notifier")
-    schedule.every(2).minutes.do(doNotify)
-    while True:
-        schedule.run_pending()
-        time.sleep(60)
+    job = sched.add_date_job(doNotify, datetime(2017, 3, 7, 17, 0,0), ['yo'])
     
 def doNotify():
     log("notifing")
