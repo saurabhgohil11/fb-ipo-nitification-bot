@@ -204,7 +204,7 @@ def setup_app(app):
         log("DB not exist crawling data and creating DB")
         IPOCrawler.refreshData()
         log("DONE: DB not exist crawling data and creating DB")
+setup_app(app)
 
 if __name__ == '__main__':
-    setup_app(app)
     app.run(debug=True)
