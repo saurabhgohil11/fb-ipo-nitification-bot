@@ -4,6 +4,7 @@ import DBHelper
 import sys
 from datetime import datetime
 import IPOHelper
+import app
 
 req = Request("http://www.chittorgarh.com/ipo/ipo_list.asp", headers={'User-Agent': 'Mozilla/5.0'})
 
