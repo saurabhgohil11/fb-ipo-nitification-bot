@@ -52,7 +52,7 @@ def insertIPO(ipo):
     except sqlite3.IntegrityError:
         log("trying to add duplicate ipo")
     conn.close()
-    
+##TODO if user exists remove him
 def insertUser(user_id):
     conn = sqlite3.connect('ipocache.db')
     c = conn.cursor()

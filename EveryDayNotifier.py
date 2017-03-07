@@ -17,7 +17,6 @@ def doNotify():
     #notify for new listings
     newIPOList = IPOCrawler.refreshData()
     
-    log("newIPOList:")
     if not newIPOList:
         notifyIPOswithMsg(newIPOList,"Hey, Seems New IPOs are listed.")
         
@@ -33,7 +32,6 @@ def doNotify():
         
     #notify runningIPO except opening closing
     runningList = IPOHelper.getRunningIPO(True)
-    log("runningipo:"+runningList)
     if not list:
         notifyIPOswithMsg(runningList,"Hola, Have you subscribed these Yet?.")
         
@@ -44,8 +42,8 @@ def notifyIPOswithMsg(IPOList,message1):
     subscriberList = DBHelper.getUserIdList("1")
     log("subs:"+subscriberList)
     for user in subscriberList:
-        log("user is"+user)
-        app.send_message(user, jsonFormat)
+        log("user is"+user[0])
+        app.send_message(user[0], jsonFormat)
         
     for ipoData in IPOList:
         notifyIPO(ipoData)
