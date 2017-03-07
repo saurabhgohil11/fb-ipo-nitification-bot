@@ -7,9 +7,11 @@ import IPOHelper
 import DBHelper
 import DateUtils
 import urllib
+import EveryDayNotifier
 
 import requests
 from flask import Flask, request
+
 
 app = Flask(__name__)
 
@@ -200,10 +202,11 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     
 def setup_app(app):
     # All your initialization code
-    if not(os.path.isfile('ipocache.db')):
-        log("DB not exist crawling data and creating DB")
-        IPOCrawler.refreshData()
-        log("DONE: DB not exist crawling data and creating DB")
+    EveryDayNotifier.start()
+    #if not(os.path.isfile('ipocache.db')):
+        #log("DB not exist crawling data and creating DB")
+        #IPOCrawler.refreshData()
+        #log("DONE: DB not exist crawling data and creating DB")
 setup_app(app)
 
 if __name__ == '__main__':
