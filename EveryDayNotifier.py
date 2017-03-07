@@ -9,8 +9,7 @@ import time
 asia_culcutta = timezone('Asia/Calcutta')
 
 def start():
-    #schedule.every(1).minutes.do(doNotify)
-    a=1
+    schedule.every(1).minutes.do(doNotify)
     
 def doNotify():
     #notify for new listings
