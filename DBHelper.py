@@ -42,6 +42,15 @@ def hasIPO(ipoData):
     select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
     return executeSelect(select_stmt)
     
+def updateIPO(ipoData):
+    conn = sqlite3.connect('ipocache.db')
+    c = conn.cursor()
+    c.execute( """UPDATE IPOLIST SET CLOSE_DATE = ? ,OFFER_PRICE = ?,ISSUE_TYPE = ?,ISSUE_SIZE_CR = ?,LINK = ? WHERE COMPANY= ? AND OPEN_DATE = ?""",
+                        (ipoData[2],ipoData[3],ipoData[4],ipoData[5],ipoData[6],ipoData[0],ipoData[1]))
+    conn.commit()
+    conn.close()
+    return
+
 def insertIPO(ipo):
     conn = sqlite3.connect('ipocache.db')
     c = conn.cursor()
@@ -91,8 +100,12 @@ def getIPOwithinDate(date,withOutBoundry):
         select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE < '%s' AND CLOSE_DATE > '%s'" % (date,date)
     return executeSelect(select_stmt)
 
-def getIPOgreaterThanDate(date):
+def getCurrentAndUpcomingIPO(date):
     select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE >= '%s' OR CLOSE_DATE >= '%s'" % (date,date)
+    return executeSelect(select_stmt)
+
+def getIPOOpenDateGreaterThanDate(date):
+    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE > '%s'" % (date,date)
     return executeSelect(select_stmt)
 
 def getUserIdList(active):
@@ -101,6 +114,14 @@ def getUserIdList(active):
     list = executeSelect(select_stmt)
     log(list)
     return list
+
+def removeuser(user_id):
+    conn = sqlite3.connect('ipocache.db')
+    c = conn.cursor()
+    c.execute( "UPDATE USERLIST SET IS_ACTIVE = '0' WHERE USER_ID = ?",user_id)
+    conn.commit()
+    conn.close()
+    return
 
 def executeSelect(select_stmt):
     conn = sqlite3.connect('ipocache.db')
@@ -121,6 +142,7 @@ def dropTableUser():
     conn.execute("DROP TABLE IF EXISTS USERLIST")
     conn.close()
     log("Table removed user")
+    
     
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)

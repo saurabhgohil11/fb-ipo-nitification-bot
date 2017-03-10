@@ -2,8 +2,7 @@ import DBHelper
 import DateUtils
 
 def getOpeningTodayIPO():
-    
-    return DBHelper.getIPObycloseDate(DateUtils.getTodaysDate());
+    return DBHelper.getIPObyopenDate(DateUtils.getTodaysDate());
 
 def getClosingTodayIPO():
     return DBHelper.getIPObycloseDate(DateUtils.getTodaysDate());
@@ -17,8 +16,8 @@ def getIPObyName(ipoName):
 def getIPObyDate(date):
     return DBHelper.getIPO(date)
     
-def getCurrentIPO():
-    return DBHelper.getIPOgreaterThanDate(DateUtils.getTodaysDate())
+def getUpcomingIPO():
+    return DBHelper.getIPOOpenDateGreaterThanDate(DateUtils.getTodaysDate())
     
 def getLast10IPO():
     return DBHelper.getLast10IPO()
@@ -26,9 +25,12 @@ def getLast10IPO():
 def insertNewIPOs(ipoList):
     newIPOList = []
     for x in ipoList:
-        if not DBHelper.hasIPO(x):
+        y = DBHelper.hasIPO(x)
+        if not y: #new ipo
             DBHelper.insertIPO(x)
             newIPOList.append(x)
-    
+        elif tuple(x)!=y[0]: #new data found for existing ipo
+            DBHelper.updateIPO(x)
+            newIPOList.append(x)
     return newIPOList
 

@@ -21,14 +21,13 @@ from apscheduler.triggers.interval import IntervalTrigger
 app = Flask(__name__)
 
 
-@app.before_first_request
-def initialize():
-    log("init s")
+def initScheduler():
+    log("init scheduler")
     scheduler = BackgroundScheduler()
-    #scheduler.start()
+    scheduler.start()
     scheduler.add_job(
         func=startNotifier,
-        trigger=IntervalTrigger(seconds=20),
+        trigger=IntervalTrigger(seconds=60),
         id='notifiying_job',
         name='Notifiy every twenty seconds',
         replace_existing=True)
@@ -69,7 +68,7 @@ def webhook():
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
                     message_text = messaging_event["message"]["text"]  # the message's text
                     DBHelper.insertUser(sender_id)
-                    responseList = formResponse(message_text)
+                    responseList = formResponse(sender_id,message_text)
                     for text in responseList:
                         send_message(sender_id, text)
 
@@ -107,7 +106,7 @@ def send_message(recipient_id, message):
         log(r.status_code)
         log(r.text)
 
-def formResponse(text):
+def formResponse(sender_id,text):
     msg_type = MessageParser.parse(text)
     responseList = []
     if msg_type==MessageParser.GREETING_MSG:
@@ -143,8 +142,8 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
         responseList.append(jsonFormat)
                
         
-    elif msg_type==MessageParser.CURRENT_OR_UPCOMING_IPO:
-        ipolist = IPOHelper.getCurrentIPO()
+    elif msg_type==MessageParser.UPCOMING_IPO:
+        ipolist = IPOHelper.getUpcomingIPO()
         for ipoData in ipolist:
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
@@ -159,7 +158,10 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
         ipoName = MessageParser.parseIPOName(text)
         ipolist = IPOHelper.getIPObyName(ipoName)
         if not ipoName:
-            ipolist = IPOHelper.getCurrentIPO() 
+            ipolist = IPOHelper.getRunningIPO(False)
+            msg1 = "Try ipo 'company name'. By the way here is the running IPO List" 
+            jsonFormat = generateJSONResposneForText(message2)
+            responseList.append(msg1)
         
         for ipoData in ipolist:
             jsonFormat = generateJSONResposneForIPO(ipoData)
@@ -172,6 +174,12 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE. 
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
 
+    elif msg_type==MessageParser.REMOVE_ME:
+        DBHelper.removeuser(sender_id)
+        message1 = "You are successfully unsubscribed. Ping me any time if you want to subscribe again."
+        jsonFormat = generateJSONResposneForText(message1)
+        responseList.append(jsonFormat)
+            
     if not responseList:
         message1 = "Sorry, No Results Found."
         jsonFormat = generateJSONResposneForText(message1)
@@ -233,5 +241,4 @@ def setup_app(app):
 setup_app(app)
 
 if __name__ == '__main__':
-    EveryDayNotifier.start()
     app.run(debug=True)

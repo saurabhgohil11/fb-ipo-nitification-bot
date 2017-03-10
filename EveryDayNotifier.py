@@ -2,11 +2,7 @@ import app
 import IPOCrawler
 import IPOHelper
 import DBHelper
-from pytz import timezone
 import sys
-
-asia_culcutta = timezone('Asia/Calcutta')
-
 
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
@@ -41,15 +37,10 @@ def notifyIPOswithMsg(IPOList,message1):
     jsonFormat = app.generateJSONResposneForText(message1)
     subscriberList = DBHelper.getUserIdList("1")
     for user in subscriberList:
-        log("user is"+user[0])
+        log("Notifying user :"+user[0])
         app.send_message(user[0], jsonFormat)
-        
-    for ipoData in IPOList:
-        notifyIPO(ipoData)
+        for ipoData in IPOList:
+            jsonFormat = app.generateJSONResposneForIPO(ipoData)
+            app.send_message(user, jsonFormat)
 
-
-def notifyIPO(ipoData):
-    subscriberList = DBHelper.getUserIdList("1")
-    for user in subscriberList:
-        jsonFormat = app.generateJSONResposneForIPO(ipoData)
-        app.send_message(user, jsonFormat)
+    
