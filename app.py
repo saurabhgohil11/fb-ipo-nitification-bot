@@ -19,11 +19,11 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 app = Flask(__name__)
-
+scheduler = BackgroundScheduler()
 
 def initScheduler():
     log("init scheduler")
-    scheduler = BackgroundScheduler()
+    
     scheduler.start()
     scheduler.add_job(
         func=startNotifier,
@@ -239,7 +239,7 @@ def setup_app(app):
         log("DONE: DB not exist crawling data and creating DB")
     
 setup_app(app)
+initScheduler()
 
 if __name__ == '__main__':
-    initScheduler()
-    app.run(debug=True)
+    app.run(debug=False)
