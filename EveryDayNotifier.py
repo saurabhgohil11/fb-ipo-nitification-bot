@@ -41,6 +41,6 @@ def notifyIPOswithMsg(IPOList,message1):
         app.send_message(user[0], jsonFormat)
         for ipoData in IPOList:
             jsonFormat = app.generateJSONResposneForIPO(ipoData)
-            app.send_message(user, jsonFormat)
+            app.send_message(user[0], jsonFormat)
 
     

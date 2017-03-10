@@ -19,11 +19,11 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 app = Flask(__name__)
-scheduler = BackgroundScheduler()
+
 
 def initScheduler():
     log("init scheduler")
-    
+    scheduler = BackgroundScheduler()
     scheduler.start()
     scheduler.add_job(
         func=startNotifier,
@@ -111,7 +111,7 @@ def formResponse(sender_id,text):
     responseList = []
     if msg_type==MessageParser.GREETING_MSG:
         message1 = '''Hello, Welcome to IPO Notifier. 
-We will message you on when ever a new IPO is going to be listed on BSE or NSE. Do not delete this chat if you want to get notified.'''
+We will message you on when ever a new IPO is going to be listed on BSE or NSE.'''
         
         message2 = '''Use Following Keywords for your task.
 1. Current IPO
@@ -242,4 +242,4 @@ setup_app(app)
 initScheduler()
 
 if __name__ == '__main__':
-    app.run(debug=True, use_reloader=False)
+    app.run(debug=False, use_reloader=False)
