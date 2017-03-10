@@ -1,7 +1,7 @@
 from datetime import datetime
 from pytz import timezone 
 
-asia_culcutta = timezone('Asia/Calcutta')
+asia_culcutta = timezone('Europe/Amsterdam')
 
 def formatComparable(dateStr):
     try:
