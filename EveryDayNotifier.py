@@ -9,28 +9,28 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     sys.stdout.flush()
     
 def doNotify():
-    log("notifing")
+    log("doNotify")
     #notify for new listings
     newIPOList = IPOCrawler.refreshData()
     
-    if not newIPOList:
+    if newIPOList:
         notifyIPOswithMsg(newIPOList,"Hey, Seems New IPOs are listed.")
         
     #notify Opening Today
     openList = IPOHelper.getOpeningTodayIPO()
-    if not list:
+    if openList:
         notifyIPOswithMsg(openList,"Knock Knock!! Opening Today!")
            
     #notify closing Today
     closeList = IPOHelper.getClosingTodayIPO()
-    if not list:
+    if closeList:
         notifyIPOswithMsg(closeList,"Hurry up!! Closing Today!")
         
     #notify runningIPO except opening closing
     runningList = IPOHelper.getRunningIPO(True)
-    if not list:
+    if runningList:
         notifyIPOswithMsg(runningList,"Hola, Have you subscribed these Yet?.")
-        
+            
 
 
 def notifyIPOswithMsg(IPOList,message1):
