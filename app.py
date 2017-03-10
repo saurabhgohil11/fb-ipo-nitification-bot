@@ -27,7 +27,7 @@ def initScheduler():
     scheduler.start()
     scheduler.add_job(
         func=startNotifier,
-        trigger=IntervalTrigger(seconds=20),
+        trigger=IntervalTrigger(seconds=60),
         id='notifiying_job',
         name='Notifiy every twenty seconds',
         replace_existing=True)
@@ -239,7 +239,7 @@ def setup_app(app):
         log("DONE: DB not exist crawling data and creating DB")
     
 setup_app(app)
-initScheduler()
+#initScheduler()
 
 if __name__ == '__main__':
     app.run(debug=False, use_reloader=False)
