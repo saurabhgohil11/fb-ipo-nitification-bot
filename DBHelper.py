@@ -105,7 +105,7 @@ def getCurrentAndUpcomingIPO(date):
     return executeSelect(select_stmt)
 
 def getIPOOpenDateGreaterThanDate(date):
-    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE > '%s'" % (date,date)
+    select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE > '%s'" % (date)
     return executeSelect(select_stmt)
 
 def getUserIdList(active):
