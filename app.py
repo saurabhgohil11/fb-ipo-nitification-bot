@@ -28,7 +28,7 @@ def initScheduler():
         scheduler.start()
         scheduler.add_job(
             func=startNotifier,
-            trigger=IntervalTrigger(seconds=60),
+            trigger=IntervalTrigger(seconds=10),
             id='notifiying_job',
             name='Notifiy every twenty seconds',
             replace_existing=True)

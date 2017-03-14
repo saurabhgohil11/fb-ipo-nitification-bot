@@ -31,7 +31,7 @@ def doNotify():
     if runningList:
         notifyIPOswithMsg(runningList,"Hola, Have you subscribed these Yet?.")
             
-
+    notifyIPOswithMsg([],"morning msg bitches")
 
 def notifyIPOswithMsg(IPOList,message1):
     jsonFormat = app.generateJSONResposneForText(message1)
