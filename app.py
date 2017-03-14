@@ -18,13 +18,7 @@ import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-app = Flask(__name__)
-
-@app.before_first_request
-def initialize():
-    log("make schduler run")
-   
-        
+app = Flask(__name__)  
     
 def initScheduler():
     log("init scheduler")
