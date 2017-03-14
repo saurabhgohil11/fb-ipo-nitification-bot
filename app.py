@@ -233,13 +233,13 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     
 def setup_app(app):
     # All your initialization code 
-    if not(os.path.isfile('ipocache.db')):
+    if not(os.path.isfile(DBHelper.DB_PATH)):
         log("DB not exist crawling data and creating DB")
         IPOCrawler.refreshData()
         log("DONE: DB not exist crawling data and creating DB")
     
 setup_app(app)
-#initScheduler()
+initScheduler()
 
 if __name__ == '__main__':
     app.run(debug=False, use_reloader=False)
