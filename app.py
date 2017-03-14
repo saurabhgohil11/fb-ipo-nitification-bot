@@ -19,14 +19,12 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
 app = Flask(__name__)
-isSchedulerRunning = False
 
 @app.before_first_request
 def initialize():
     log("make schduler run")
-    if not isSchedulerRunning:
-        isSchedulerRunning = True
-        initScheduler()
+   
+        
     
 def initScheduler():
     log("init scheduler")
@@ -249,4 +247,5 @@ def setup_app():
 
 if __name__ == '__main__':
     setup_app()
+    initScheduler()
     app.run(debug=False, use_reloader=False)
