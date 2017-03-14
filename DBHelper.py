@@ -27,6 +27,18 @@ def createTable():
            IS_ACTIVE    INT,
            PRIMARY KEY (USER_ID)
        );''')
+    
+    conn.execute('''CREATE TABLE if not exists PREFS
+       (
+           NAME TEXT  NOT NULL,
+           VALUE         TEXT ,
+           PRIMARY KEY (NAME)
+       );''')
+    
+    c = conn.cursor()
+    c.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
+    conn.commit()
+    
     log("Table created successfully");
 
     conn.close()
@@ -145,7 +157,30 @@ def dropTableUser():
     conn.close()
     log("Table removed user")
     
+def isSchedulerRunning():
+    select_stmt = "SELECT * FROM PREFS WHERE NAME = 'scheduler_running'"
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute(select_stmt)
+    a = c.fetchone()
+    conn.close()
+    if a[1] == '0':
+        return True
+    else:
+        return False
     
+def schedulerRunning(value):
+    prefVal = '0'
+    if value:
+        prefVal = '1'
+    conn = sqlite3.connect(DB_PATH)
+    c = conn.cursor()
+    c.execute("""UPDATE PREFS SET VALUE = ? WHERE NAME = 'scheduler_running'""",(prefVal))
+    conn.commit()
+    conn.close()
+    return
+    
+
 def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()

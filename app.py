@@ -18,20 +18,22 @@ import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.interval import IntervalTrigger
 
-app = Flask(__name__)  
+app = Flask(__name__)
     
 def initScheduler():
     log("init scheduler")
-    scheduler = BackgroundScheduler()
-    scheduler.start()
-    scheduler.add_job(
-        func=startNotifier,
-        trigger=IntervalTrigger(seconds=60),
-        id='notifiying_job',
-        name='Notifiy every twenty seconds',
-        replace_existing=True)
-    # Shut down the scheduler when exiting the app
-    atexit.register(lambda: scheduler.shutdown())
+    if not DBHelper.isSchedulerRunning():
+        DBHelper.schedulerRunning(True)
+        scheduler = BackgroundScheduler()
+        scheduler.start()
+        scheduler.add_job(
+            func=startNotifier,
+            trigger=IntervalTrigger(seconds=60),
+            id='notifiying_job',
+            name='Notifiy every twenty seconds',
+            replace_existing=True)
+        # Shut down the scheduler when exiting the app
+        atexit.register(lambda: scheduler.shutdown())
     
 def startNotifier():
     log("startNotifier")
@@ -236,10 +238,10 @@ def setup_app():
         log("DB not exist crawling data and creating DB")
         IPOCrawler.refreshData()
         log("DONE: DB not exist crawling data and creating DB")
-    
 
+setup_app()  
+initScheduler()
 
 if __name__ == '__main__':
-    setup_app()
-    initScheduler()
+    
     app.run(debug=False, use_reloader=False)
