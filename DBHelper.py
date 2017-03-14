@@ -1,7 +1,7 @@
 import sqlite3
 import sys
 
-DB_PATH = "../db/ipocache.db"
+DB_PATH = "ipocache.db"
 
 def createTable():
     conn = sqlite3.connect(DB_PATH)
