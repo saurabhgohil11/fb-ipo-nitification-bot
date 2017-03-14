@@ -165,9 +165,9 @@ def isSchedulerRunning():
     a = c.fetchone()
     conn.close()
     if a[1] == '0':
-        return True
-    else:
         return False
+    else:
+        return True
     
 def schedulerRunning(value):
     prefVal = '0'
@@ -182,5 +182,5 @@ def schedulerRunning(value):
     
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print str(message)
+    print (message)
     sys.stdout.flush()
