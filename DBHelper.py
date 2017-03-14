@@ -182,5 +182,5 @@ def schedulerRunning(value):
     
 
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print (message)
+    print str(message)
     sys.stdout.flush()

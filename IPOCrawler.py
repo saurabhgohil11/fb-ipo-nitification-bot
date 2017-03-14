@@ -1,4 +1,4 @@
-from urllib.request import Request, urlopen
+from urllib2 import Request, urlopen
 from bs4 import BeautifulSoup
 import DBHelper
 import sys
@@ -49,6 +49,6 @@ def refreshData():
     return IPOHelper.insertNewIPOs(alldata)
     
 def log(message):  # simple wrapper for logging to stdout on heroku
-    print (message)
+    print str(message)
     sys.stdout.flush()
     
