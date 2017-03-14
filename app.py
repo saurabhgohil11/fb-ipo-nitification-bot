@@ -238,14 +238,15 @@ def log(message):  # simple wrapper for logging to stdout on heroku
     print str(message)
     sys.stdout.flush()
     
-def setup_app(app):
+def setup_app():
     # All your initialization code 
     if not(os.path.isfile(DBHelper.DB_PATH)):
         log("DB not exist crawling data and creating DB")
         IPOCrawler.refreshData()
         log("DONE: DB not exist crawling data and creating DB")
     
-setup_app(app)
+
 
 if __name__ == '__main__':
+    setup_app()
     app.run(debug=False, use_reloader=False)
