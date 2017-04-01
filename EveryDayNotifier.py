@@ -28,7 +28,7 @@ def doNotify():
     if runningList:
         notifyIPOswithMsg(runningList, "Hola, Have you subscribed these Yet?.")
 
-    notifyIPOswithMsg([], "morning msg bitches")
+    notifyIPOswithMsg([], "I'm alive.")
 
 
 def notifyIPOswithMsg(IPOList, message1):
