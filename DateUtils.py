@@ -20,4 +20,3 @@ def formatReadable(dateStr):
 def getTodaysDate():
     sa_time = datetime.now(asia_culcutta)
     return sa_time.strftime('%Y-%m-%d')
-    

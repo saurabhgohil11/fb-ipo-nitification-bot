@@ -1,29 +1,26 @@
 import DBHelper
 import IPOCrawler
-import sys
+import MyLogger
 
-
-def log(message):  # simple wrapper for logging to stdout on heroku
-    print str(message)
-    sys.stdout.flush()
 
 def startTest():
-    log("start DBTester")
+    MyLogger.log("start DBTester")
     IPOCrawler.refreshData()
     a = DBHelper.isSchedulerRunning()
     DBHelper.schedulerRunning(True)
     a = DBHelper.isSchedulerRunning()
     DBHelper.schedulerRunning(True)
     a = DBHelper.isSchedulerRunning()
-    #log("----------Testing Today's IPO-------------")
-    #log(app.formResponse("today"))
-    #log("----------Testing Music IPO-------------")
-    #log(app.formResponse("IPO MUSIC"))
-    #log("----------Testing Current IPO-------------")
-    #log(app.formResponse("current"))
-    #log("----------Testing 10 IPO-------------")
-    #log(app.formResponse("list"))
-    
-    log("End DBTester")
-    
+    # MyLogger.log("----------Testing Today's IPO-------------")
+    # MyLogger.log(app.formResponse("today"))
+    # MyLogger.log("----------Testing Music IPO-------------")
+    # MyLogger.log(app.formResponse("IPO MUSIC"))
+    # MyLogger.log("----------Testing Current IPO-------------")
+    # MyLogger.log(app.formResponse("current"))
+    # MyLogger.log("----------Testing 10 IPO-------------")
+    # MyLogger.log(app.formResponse("list"))
+
+    MyLogger.log("End DBTester")
+
+
 startTest()

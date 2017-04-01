@@ -1,5 +1,4 @@
 import os
-import sys
 import json
 import IPOCrawler
 import MessageParser
@@ -8,6 +7,7 @@ import DBHelper
 import DateUtils
 import urllib
 import EveryDayNotifier
+import MyLogger
 
 import requests
 from flask import Flask, request
@@ -21,14 +21,14 @@ from apscheduler.triggers.interval import IntervalTrigger
 app = Flask(__name__)
     
 def initScheduler():
-    log("init scheduler")
+    MyLogger.log("init scheduler")
     if not DBHelper.isSchedulerRunning():
         DBHelper.schedulerRunning(True)
         scheduler = BackgroundScheduler()
         scheduler.start()
         scheduler.add_job(
             func=startNotifier,
-            trigger=IntervalTrigger(minutes=25),
+            trigger=IntervalTrigger(minutes=90),
             id='notifiying_job',
             name='Notifiy every twenty seconds',
             replace_existing=True)
@@ -36,7 +36,7 @@ def initScheduler():
         atexit.register(lambda: scheduler.shutdown())
     
 def startNotifier():
-    log("startNotifier")
+    MyLogger.log("startNotifier")
     EveryDayNotifier.doNotify()
 
 @app.route('/', methods=['GET'])
@@ -56,7 +56,7 @@ def webhook():
     # endpoint for processing incoming messaging events
 
     data = request.get_json()
-    log(data)  # you may not want to log every incoming message in production, but it's good for testing
+    MyLogger.log(data)  # you may not want to MyLogger.log every incoming message in production, but it's good for testing
 
     if data["object"] == "page":
 
@@ -87,7 +87,7 @@ def webhook():
 
 def send_message(recipient_id, message):
 
-    log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message))
+    MyLogger.log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -104,8 +104,8 @@ def send_message(recipient_id, message):
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
-        log(r.status_code)
-        log(r.text)
+        MyLogger.log(r.status_code)
+        MyLogger.log(r.text)
 
 def formResponse(sender_id,text):
     msg_type = MessageParser.parse(text)
@@ -115,8 +115,8 @@ def formResponse(sender_id,text):
 We will message you on when ever a new IPO is going to be listed on BSE or NSE.'''
         
         message2 = '''Use Following Keywords for your task.
-1. Current IPO
-2. Today's IPO, IPO Of the Day
+1. Upcoming IPO
+2. Today's IPO, Current IPO
 3. IPO List
 4. ipo 'Company name'.'''
         jsonFormat = generateJSONResposneForText(message1)
@@ -132,8 +132,8 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE.'
     elif msg_type==MessageParser.HELP:
         
         message1 = '''Use Following Keywords for your task.
-1. Current IPO
-2. Today's IPO, IPO Of the Day
+1. Upcoming IPO
+2. Today's IPO, Current IPO
 3. IPO List
 4. ipo 'Company name'.'''
         message2 = "To unsubscribe type Remove Me and delete this chat."
@@ -161,7 +161,7 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE.'
         if not ipoName:
             ipolist = IPOHelper.getRunningIPO(False)
             msg1 = "Try ipo 'company name'. By the way here is the running IPO List" 
-            jsonFormat = generateJSONResposneForText(message2)
+            jsonFormat = generateJSONResposneForText(msg1)
             responseList.append(msg1)
         
         for ipoData in ipolist:
@@ -227,17 +227,12 @@ def generateJSONResposneForIPO(ipoData):
         }
     })
 
-
-def log(message):  # simple wrapper for logging to stdout on heroku
-    print str(message)
-    sys.stdout.flush()
-    
 def setup_app():
     # All your initialization code 
     if not(os.path.isfile(DBHelper.DB_PATH)):
-        log("DB not exist crawling data and creating DB")
+        MyLogger.log("DB not exist crawling data and creating DB")
         IPOCrawler.refreshData()
-        log("DONE: DB not exist crawling data and creating DB")
+        MyLogger.log("DONE: DB not exist crawling data and creating DB")
 
 setup_app()  
 initScheduler()

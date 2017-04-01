@@ -1,7 +1,7 @@
 from urllib2 import Request, urlopen
 from bs4 import BeautifulSoup
 import DBHelper
-import sys
+import MyLogger
 from datetime import datetime
 import IPOHelper
 
@@ -38,17 +38,12 @@ def refreshData():
         rowdata.append(link)
         alldata.append(rowdata)
         
-    #log(indexheaders)
+    #MyLogger.log(indexheaders)
     #for row in alldata:
-    #    log(row)
-    log('check for table existance')
+    #    MyLogger.log(row)
+    MyLogger.log('check for table existance')
     if not DBHelper.isTableExist():
-        log("table not exists") 
+        MyLogger.log("table not exists")
         DBHelper.createTable()
 
     return IPOHelper.insertNewIPOs(alldata)
-    
-def log(message):  # simple wrapper for logging to stdout on heroku
-    print str(message)
-    sys.stdout.flush()
-    

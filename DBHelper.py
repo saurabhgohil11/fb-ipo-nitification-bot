@@ -1,5 +1,5 @@
 import sqlite3
-import sys
+import MyLogger
 
 DB_PATH = "ipocache.db"
 
@@ -39,7 +39,7 @@ def createTable():
     c.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
     conn.commit()
     
-    log("Table created successfully");
+    MyLogger.log("Table created successfully");
 
     conn.close()
 
@@ -71,9 +71,9 @@ def insertIPO(ipo):
     try:
         c.execute('INSERT INTO IPOLIST VALUES (?,?,?,?,?,?,?)', ipo)
         conn.commit()
-        log("ipo "+ ipo[0] +"inserted successfully");
+        MyLogger.log("ipo "+ ipo[0] +"inserted successfully");
     except sqlite3.IntegrityError:
-        log("trying to add duplicate ipo")
+        MyLogger.log("trying to add duplicate ipo")
     conn.close()
 
 ##TODO if user exists remove him
@@ -83,9 +83,9 @@ def insertUser(user_id):
     try:
         c.execute("INSERT INTO USERLIST VALUES (?,'','','','','',1)", [user_id])
         conn.commit()
-        log("user inserted successfully");
+        MyLogger.log("user inserted successfully");
     except sqlite3.IntegrityError:
-        log("trying to add duplicate user")
+        MyLogger.log("trying to add duplicate user")
     conn.close()
 
 
@@ -123,10 +123,10 @@ def getIPOOpenDateGreaterThanDate(date):
     return executeSelect(select_stmt)
 
 def getUserIdList(active):
-    log("get user id")
+    MyLogger.log("get user id")
     select_stmt = "SELECT USER_ID FROM USERLIST WHERE IS_ACTIVE = '%s'" % (active)
     list = executeSelect(select_stmt)
-    log(list)
+    MyLogger.log(list)
     return list
 
 def removeuser(user_id):
@@ -149,13 +149,13 @@ def dropTableIPO():
     conn = sqlite3.connect(DB_PATH)
     conn.execute("DROP TABLE IF EXISTS IPOLIST")
     conn.close()
-    log("Table removed IPO")
+    MyLogger.log("Table removed IPO")
     
 def dropTableUser():
     conn = sqlite3.connect(DB_PATH)
     conn.execute("DROP TABLE IF EXISTS USERLIST")
     conn.close()
-    log("Table removed user")
+    MyLogger.log("Table removed user")
     
 def isSchedulerRunning():
     select_stmt = "SELECT * FROM PREFS WHERE NAME = 'scheduler_running'"
@@ -179,8 +179,3 @@ def schedulerRunning(value):
     conn.commit()
     conn.close()
     return
-    
-
-def log(message):  # simple wrapper for logging to stdout on heroku
-    print str(message)
-    sys.stdout.flush()
