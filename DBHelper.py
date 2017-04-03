@@ -52,12 +52,19 @@ def createTable():
            PRIMARY KEY (NAME)
        );''')
 
-    c.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
-    conn.commit()
-    
-    MyLogger.log("Table created successfully");
 
-    conn.close()
+    try:
+        c.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
+        conn.commit()
+        MyLogger.log("Table created successfully")
+        conn.close()
+    except IntegrityError:
+        c.execute("""UPDATE PREFS SET VALUE ='0' WHERE NAME = 'scheduler_running'""")
+        conn.commit()
+        MyLogger.log("setting scheduler start to 0 ")
+        MyLogger.log("Table created successfully")
+        conn.close()
+
 
 def isTableExist():
     # select_stmt = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='IPOLIST'"
@@ -113,10 +120,11 @@ def insertIPO(ipo):
         insert_stmt = "INSERT INTO IPOLIST VALUES ('%s','%s','%s','%s','%s','%s','%s')" % (ipo[0],ipo[1],ipo[2],ipo[3],ipo[4],ipo[5],ipo[6])
         c.execute(insert_stmt)
         conn.commit()
-        MyLogger.log("ipo "+ ipo[0] +"inserted successfully");
-    except sqlite3.IntegrityError:
+        MyLogger.log("ipo "+ ipo[0] +"inserted successfully")
+        conn.close()
+    except IntegrityError:
         MyLogger.log("trying to add duplicate ipo")
-    conn.close()
+        conn.close()
 
 ##TODO if user exists remove him
 def insertUser(user_id):
@@ -133,10 +141,11 @@ def insertUser(user_id):
         insert_stmt = "INSERT INTO USERLIST VALUES ('%s','','','','','',1)" % (user_id)
         c.execute(insert_stmt)
         conn.commit()
-        MyLogger.log("user inserted successfully");
-    except sqlite3.IntegrityError:
+        MyLogger.log("user inserted successfully")
+        conn.close()
+    except IntegrityError:
         MyLogger.log("trying to add duplicate user")
-    conn.close()
+        conn.close()
 
 
 def getLast10IPO():
