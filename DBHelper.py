@@ -73,7 +73,10 @@ def isTableExist():
     c.execute(select_stmt)
     a = c.fetchone()
     conn.close()
-    return a[0]
+    if a:
+        return a[0]
+    else:
+        return 0
 
 def hasIPO(ipoData):
     select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
