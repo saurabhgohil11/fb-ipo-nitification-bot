@@ -22,19 +22,18 @@ app = Flask(__name__)
     
 def initScheduler():
     MyLogger.log("init scheduler")
-    # if not DBHelper.isSchedulerRunning():
-        # MyLogger.log("upTheNotifier")
-        # DBHelper.schedulerRunning(True)
-    scheduler = BackgroundScheduler()
-    scheduler.start()
-    scheduler.add_job(
-        func=startNotifier,
-        trigger=IntervalTrigger(seconds=90),
-        id='notifiying_job',
-        name='Notifiy every twenty seconds',
-        replace_existing=True)
-    # Shut down the scheduler when exiting the app
-    atexit.register(lambda: scheduler.shutdown())
+    if not DBHelper.isSchedulerRunning():
+        DBHelper.schedulerRunning(True)
+        scheduler = BackgroundScheduler()
+        scheduler.start()
+        scheduler.add_job(
+            func=startNotifier,
+            trigger=IntervalTrigger(minutes=90),
+            id='notifiying_job',
+            name='Notifiy every twenty seconds',
+            replace_existing=True)
+        # Shut down the scheduler when exiting the app
+        atexit.register(lambda: scheduler.shutdown())
 
 def startNotifier():
     MyLogger.log("startNotifier")
@@ -230,8 +229,12 @@ def generateJSONResposneForIPO(ipoData):
 
 def setup_app():
     # All your initialization code 
+    if not(os.path.isfile(DBHelper.DB_PATH)):
+        MyLogger.log("local DB not exist creating DB")
+        DBHelper.createPrefTable()
+
     IPOCrawler.refreshData()
-        
+
 
 setup_app()  
 initScheduler()

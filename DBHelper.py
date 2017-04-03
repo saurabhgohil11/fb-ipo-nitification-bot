@@ -50,6 +50,19 @@ def createTable():
 
     MyLogger.log("Table created successfully")
 
+def createPrefTable():
+    conn2 = sqlite3.connect(DB_PATH)
+    c2 = conn2.cursor()
+    c2.execute('''CREATE TABLE if not exists PREFS
+           (
+               NAME TEXT  NOT NULL,
+               VALUE         TEXT ,
+               PRIMARY KEY (NAME)
+           );''')
+    c2.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
+    conn2.commit()
+    conn2.close()
+    MyLogger.log("setting scheduler start to 0 ")
 
 
 def isTableExist():
@@ -75,7 +88,7 @@ def isTableExist():
 def hasIPO(ipoData):
     select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
     return executeSelect(select_stmt)
-    
+
 def updateIPO(ipoData):
     # conn = sqlite3.connect(DB_PATH)
     conn = psycopg2.connect(
@@ -137,12 +150,12 @@ def insertUser(user_id):
 def getLast10IPO():
     select_stmt = "SELECT * FROM IPOLIST ORDER BY OPEN_DATE DESC LIMIT 10"
     return executeSelect(select_stmt)
-    
-#Provide IPO Name in UPPER CASE ONLY    
+
+#Provide IPO Name in UPPER CASE ONLY
 def getIPO(ipoName):
     select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY LIKE '%"+ipoName+"%'"
     return executeSelect(select_stmt)
-    
+
 #date fore mate 2017-12-30
 def getIPObyopenDate(date):
     select_stmt = "SELECT * FROM IPOLIST WHERE OPEN_DATE = '%s'" % (date)
@@ -204,7 +217,7 @@ def executeSelect(select_stmt):
     datalist = c.fetchall()
     conn.close()
     return datalist
-    
+
 def dropTableIPO():
     # conn = sqlite3.connect(DB_PATH)
     conn = psycopg2.connect(
@@ -217,7 +230,7 @@ def dropTableIPO():
     conn.execute("DROP TABLE IF EXISTS IPOLIST")
     conn.close()
     MyLogger.log("Table removed IPO")
-    
+
 def dropTableUser():
     # conn = sqlite3.connect(DB_PATH)
     conn = psycopg2.connect(
@@ -230,7 +243,7 @@ def dropTableUser():
     conn.execute("DROP TABLE IF EXISTS USERLIST")
     conn.close()
     MyLogger.log("Table removed user")
-    
+
 def isSchedulerRunning():
     select_stmt = "SELECT * FROM PREFS WHERE NAME = 'scheduler_running'"
     conn = sqlite3.connect(DB_PATH)
@@ -243,7 +256,7 @@ def isSchedulerRunning():
         return False
     else:
         return True
-    
+
 def schedulerRunning(value):
     prefVal = '0'
     if value:
