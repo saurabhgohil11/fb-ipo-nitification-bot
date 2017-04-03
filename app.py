@@ -24,7 +24,7 @@ def initScheduler():
     MyLogger.log("init scheduler")
     # if not DBHelper.isSchedulerRunning():
         # MyLogger.log("upTheNotifier")
-    DBHelper.schedulerRunning(True)
+        # DBHelper.schedulerRunning(True)
     scheduler = BackgroundScheduler()
     scheduler.start()
     scheduler.add_job(
