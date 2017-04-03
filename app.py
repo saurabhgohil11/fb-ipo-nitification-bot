@@ -22,9 +22,9 @@ app = Flask(__name__)
     
 def initScheduler():
     MyLogger.log("init scheduler"+str(os.getpid()))
-    if not DBHelper.isSchedulerRunning():
+    if os.getpid() == 10:
         MyLogger.log("up starting")
-        DBHelper.schedulerRunning(True)
+
         scheduler = BackgroundScheduler()
         scheduler.start()
         scheduler.add_job(
@@ -229,11 +229,7 @@ def generateJSONResposneForIPO(ipoData):
     })
 
 def setup_app():
-    # All your initialization code 
-    if not(os.path.isfile(DBHelper.DB_PATH)):
-        MyLogger.log("local DB not exist creating DB")
-        DBHelper.createPrefTable()
-
+    # All your initialization code
     IPOCrawler.refreshData()
 
 
