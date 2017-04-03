@@ -59,8 +59,9 @@ def createTable():
     conn.close()
 
 def isTableExist():
-    select_stmt = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='IPOLIST'"
+    # select_stmt = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='IPOLIST'"
     # conn = sqlite3.connect(DB_PATH)
+    select_stmt = "SELECT true FROM pg_tables WHERE tablename='IPOLIST'"
     conn = psycopg2.connect(
         database=url.path[1:],
         user=url.username,
