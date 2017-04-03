@@ -110,7 +110,8 @@ def insertIPO(ipo):
     )
     c = conn.cursor()
     try:
-        c.execute('INSERT INTO IPOLIST VALUES (?,?,?,?,?,?,?)', ipo)
+        insert_stmt = "INSERT INTO IPOLIST VALUES ('%s','%s','%s','%s','%s','%s','%s')" % (ipo[0],ipo[1],ipo[2],ipo[3],ipo[4],ipo[5],ipo[6])
+        c.execute(insert_stmt)
         conn.commit()
         MyLogger.log("ipo "+ ipo[0] +"inserted successfully");
     except sqlite3.IntegrityError:
@@ -129,7 +130,8 @@ def insertUser(user_id):
     )
     c = conn.cursor()
     try:
-        c.execute("INSERT INTO USERLIST VALUES (?,'','','','','',1)", [user_id])
+        insert_stmt = "INSERT INTO USERLIST VALUES ('%s','','','','','',1)" % (user_id)
+        c.execute(insert_stmt)
         conn.commit()
         MyLogger.log("user inserted successfully");
     except sqlite3.IntegrityError:
