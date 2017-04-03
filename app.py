@@ -229,10 +229,8 @@ def generateJSONResposneForIPO(ipoData):
 
 def setup_app():
     # All your initialization code 
-    if not(os.path.isfile(DBHelper.DB_PATH)):
-        MyLogger.log("DB not exist crawling data and creating DB")
-        IPOCrawler.refreshData()
-        MyLogger.log("DONE: DB not exist crawling data and creating DB")
+    IPOCrawler.refreshData()
+        
 
 setup_app()  
 initScheduler()
