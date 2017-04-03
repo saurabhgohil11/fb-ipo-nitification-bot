@@ -21,7 +21,7 @@ from apscheduler.triggers.interval import IntervalTrigger
 app = Flask(__name__)
     
 def initScheduler():
-    MyLogger.log("init scheduler"+os.getpid())
+    MyLogger.log("init scheduler"+str(os.getpid()))
     if not DBHelper.isSchedulerRunning():
         MyLogger.log("up starting")
         DBHelper.schedulerRunning(True)
