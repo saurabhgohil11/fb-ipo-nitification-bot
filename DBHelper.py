@@ -48,19 +48,6 @@ def createTable():
     conn.commit()
     conn.close()
 
-    conn2 = sqlite3.connect(DB_PATH)
-    c2 = conn2.cursor()
-    c2.execute('''CREATE TABLE if not exists PREFS
-           (
-               NAME TEXT  NOT NULL,
-               VALUE         TEXT ,
-               PRIMARY KEY (NAME)
-           );''')
-    c2.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
-    conn2.commit()
-    conn2.close()
-
-    MyLogger.log("setting scheduler start to 0 ")
     MyLogger.log("Table created successfully")
 
 
