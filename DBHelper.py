@@ -95,8 +95,8 @@ def updateIPO(ipoData):
         port=url.port
     )
     c = conn.cursor()
-    c.execute( """UPDATE IPOLIST SET CLOSE_DATE = ? ,OFFER_PRICE = ?,ISSUE_TYPE = ?,ISSUE_SIZE_CR = ?,LINK = ? WHERE COMPANY= ? AND OPEN_DATE = ?""",
-                        (ipoData[2],ipoData[3],ipoData[4],ipoData[5],ipoData[6],ipoData[0],ipoData[1]))
+    update_stmt = """UPDATE IPOLIST SET CLOSE_DATE = '%s' ,OFFER_PRICE = '%s',ISSUE_TYPE = '%s',ISSUE_SIZE_CR = '%s',LINK = '%s' WHERE COMPANY= '%s' AND OPEN_DATE = '%s'""" % (ipoData[2],ipoData[3],ipoData[4],ipoData[5],ipoData[6],ipoData[0],ipoData[1])
+    c.execute(update_stmt)
     conn.commit()
     conn.close()
     return
@@ -193,7 +193,8 @@ def removeuser(user_id):
         port=url.port
     )
     c = conn.cursor()
-    c.execute( "UPDATE USERLIST SET IS_ACTIVE = '0' WHERE USER_ID = ?",user_id)
+    update_stmt = "UPDATE USERLIST SET IS_ACTIVE = '0' WHERE USER_ID = '%s'" % (user_id)
+    c.execute(update_stmt)
     conn.commit()
     conn.close()
     return
@@ -271,7 +272,8 @@ def schedulerRunning(value):
         port=url.port
     )
     c = conn.cursor()
-    c.execute("""UPDATE PREFS SET VALUE = ? WHERE NAME = 'scheduler_running'""",(prefVal))
+    update_stmt = """UPDATE PREFS SET VALUE = '%s' WHERE NAME = 'scheduler_running'""" % (prefVal)
+    c.execute(update_stmt)
     conn.commit()
     conn.close()
     return
