@@ -1,10 +1,25 @@
 import sqlite3
 import MyLogger
+import os
+import psycopg2
+import urlparse
 
 DB_PATH = "ipocache.db"
 
+urlparse.uses_netloc.append("postgres")
+url = urlparse.urlparse(os.environ["DATABASE_URL"])
+
+
 def createTable():
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
+
     conn.execute('''CREATE TABLE if not exists IPOLIST
        (
            COMPANY TEXT  NOT NULL,
@@ -45,7 +60,14 @@ def createTable():
 
 def isTableExist():
     select_stmt = "SELECT count(*) FROM sqlite_master WHERE type='table' AND name='IPOLIST'"
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     c.execute(select_stmt)
     a = c.fetchone()
@@ -57,7 +79,14 @@ def hasIPO(ipoData):
     return executeSelect(select_stmt)
     
 def updateIPO(ipoData):
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     c.execute( """UPDATE IPOLIST SET CLOSE_DATE = ? ,OFFER_PRICE = ?,ISSUE_TYPE = ?,ISSUE_SIZE_CR = ?,LINK = ? WHERE COMPANY= ? AND OPEN_DATE = ?""",
                         (ipoData[2],ipoData[3],ipoData[4],ipoData[5],ipoData[6],ipoData[0],ipoData[1]))
@@ -66,7 +95,14 @@ def updateIPO(ipoData):
     return
 
 def insertIPO(ipo):
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     try:
         c.execute('INSERT INTO IPOLIST VALUES (?,?,?,?,?,?,?)', ipo)
@@ -78,7 +114,14 @@ def insertIPO(ipo):
 
 ##TODO if user exists remove him
 def insertUser(user_id):
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     try:
         c.execute("INSERT INTO USERLIST VALUES (?,'','','','','',1)", [user_id])
@@ -130,7 +173,14 @@ def getUserIdList(active):
     return list
 
 def removeuser(user_id):
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     c.execute( "UPDATE USERLIST SET IS_ACTIVE = '0' WHERE USER_ID = ?",user_id)
     conn.commit()
@@ -138,7 +188,14 @@ def removeuser(user_id):
     return
 
 def executeSelect(select_stmt):
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     c.execute(select_stmt)
     datalist = c.fetchall()
@@ -146,20 +203,41 @@ def executeSelect(select_stmt):
     return datalist
     
 def dropTableIPO():
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     conn.execute("DROP TABLE IF EXISTS IPOLIST")
     conn.close()
     MyLogger.log("Table removed IPO")
     
 def dropTableUser():
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     conn.execute("DROP TABLE IF EXISTS USERLIST")
     conn.close()
     MyLogger.log("Table removed user")
     
 def isSchedulerRunning():
     select_stmt = "SELECT * FROM PREFS WHERE NAME = 'scheduler_running'"
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     c.execute(select_stmt)
     a = c.fetchone()
@@ -173,7 +251,14 @@ def schedulerRunning(value):
     prefVal = '0'
     if value:
         prefVal = '1'
-    conn = sqlite3.connect(DB_PATH)
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
     c = conn.cursor()
     c.execute("""UPDATE PREFS SET VALUE = ? WHERE NAME = 'scheduler_running'""",(prefVal))
     conn.commit()
