@@ -23,6 +23,7 @@ app = Flask(__name__)
 def initScheduler():
     MyLogger.log("init scheduler")
     if not DBHelper.isSchedulerRunning():
+        MyLogger.log("up starting")
         DBHelper.schedulerRunning(True)
         scheduler = BackgroundScheduler()
         scheduler.start()
