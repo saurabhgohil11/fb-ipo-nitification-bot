@@ -11,7 +11,7 @@ url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
 
 def createTable():
-    # conn = sqlite3.connect(DB_PATH)
+
     conn = psycopg2.connect(
         database=url.path[1:],
         user=url.username,
@@ -44,18 +44,22 @@ def createTable():
            IS_ACTIVE    INT,
            PRIMARY KEY (USER_ID)
        );''')
-    
-    c.execute('''CREATE TABLE if not exists PREFS
-       (
-           NAME TEXT  NOT NULL,
-           VALUE         TEXT ,
-           PRIMARY KEY (NAME)
-       );''')
 
     conn.commit()
     conn.close()
 
-    schedulerRunning('0')
+    conn2 = sqlite3.connect(DB_PATH)
+    c2 = conn2.cursor()
+    c2.execute('''CREATE TABLE if not exists PREFS
+           (
+               NAME TEXT  NOT NULL,
+               VALUE         TEXT ,
+               PRIMARY KEY (NAME)
+           );''')
+    c2.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
+    conn2.commit()
+    conn2.close()
+
     MyLogger.log("setting scheduler start to 0 ")
     MyLogger.log("Table created successfully")
 
@@ -242,14 +246,8 @@ def dropTableUser():
     
 def isSchedulerRunning():
     select_stmt = "SELECT * FROM PREFS WHERE NAME = 'scheduler_running'"
-    # conn = sqlite3.connect(DB_PATH)
-    conn = psycopg2.connect(
-        database=url.path[1:],
-        user=url.username,
-        password=url.password,
-        host=url.hostname,
-        port=url.port
-    )
+    conn = sqlite3.connect(DB_PATH)
+
     c = conn.cursor()
     c.execute(select_stmt)
     a = c.fetchone()
@@ -263,14 +261,7 @@ def schedulerRunning(value):
     prefVal = '0'
     if value:
         prefVal = '1'
-    # conn = sqlite3.connect(DB_PATH)
-    conn = psycopg2.connect(
-        database=url.path[1:],
-        user=url.username,
-        password=url.password,
-        host=url.hostname,
-        port=url.port
-    )
+    conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
     update_stmt = """UPDATE PREFS SET VALUE = '%s' WHERE NAME = 'scheduler_running'""" % (prefVal)
     c.execute(update_stmt)
