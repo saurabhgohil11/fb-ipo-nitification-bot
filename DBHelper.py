@@ -52,18 +52,13 @@ def createTable():
            PRIMARY KEY (NAME)
        );''')
 
+    conn.commit()
+    conn.close()
 
-    try:
-        c.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
-        conn.commit()
-        MyLogger.log("Table created successfully")
-        conn.close()
-    except psycopg2.IntegrityError:
-        c.execute("""UPDATE PREFS SET VALUE ='0' WHERE NAME = 'scheduler_running'""")
-        conn.commit()
-        MyLogger.log("setting scheduler start to 0 ")
-        MyLogger.log("Table created successfully")
-        conn.close()
+    schedulerRunning('0')
+    MyLogger.log("setting scheduler start to 0 ")
+    MyLogger.log("Table created successfully")
+
 
 
 def isTableExist():
