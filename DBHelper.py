@@ -20,7 +20,9 @@ def createTable():
         port=url.port
     )
 
-    conn.execute('''CREATE TABLE if not exists IPOLIST
+    c = conn.cursor()
+
+    c.execute('''CREATE TABLE if not exists IPOLIST
        (
            COMPANY TEXT  NOT NULL,
            OPEN_DATE         TEXT ,
@@ -31,7 +33,7 @@ def createTable():
            LINK                 TEXT,
            PRIMARY KEY (COMPANY, OPEN_DATE)
        );''')
-    conn.execute('''CREATE TABLE if not exists USERLIST
+    c.execute('''CREATE TABLE if not exists USERLIST
        (
            USER_ID TEXT  NOT NULL,
            ADD_DATA1         TEXT ,
@@ -43,14 +45,13 @@ def createTable():
            PRIMARY KEY (USER_ID)
        );''')
     
-    conn.execute('''CREATE TABLE if not exists PREFS
+    c.execute('''CREATE TABLE if not exists PREFS
        (
            NAME TEXT  NOT NULL,
            VALUE         TEXT ,
            PRIMARY KEY (NAME)
        );''')
-    
-    c = conn.cursor()
+
     c.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
     conn.commit()
     
