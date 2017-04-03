@@ -252,10 +252,10 @@ def isSchedulerRunning():
     c.execute(select_stmt)
     a = c.fetchone()
     conn.close()
-    if a[1] == '0':
-        return False
-    else:
+    if a[1] == '1':
         return True
+    else:
+        return False
 
 def schedulerRunning(value):
     prefVal = '0'
