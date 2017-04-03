@@ -58,7 +58,7 @@ def createTable():
         conn.commit()
         MyLogger.log("Table created successfully")
         conn.close()
-    except IntegrityError:
+    except psycopg2.IntegrityError:
         c.execute("""UPDATE PREFS SET VALUE ='0' WHERE NAME = 'scheduler_running'""")
         conn.commit()
         MyLogger.log("setting scheduler start to 0 ")
@@ -122,7 +122,7 @@ def insertIPO(ipo):
         conn.commit()
         MyLogger.log("ipo "+ ipo[0] +"inserted successfully")
         conn.close()
-    except IntegrityError:
+    except psycopg2.IntegrityError:
         MyLogger.log("trying to add duplicate ipo")
         conn.close()
 
@@ -143,7 +143,7 @@ def insertUser(user_id):
         conn.commit()
         MyLogger.log("user inserted successfully")
         conn.close()
-    except IntegrityError:
+    except psycopg2.IntegrityError:
         MyLogger.log("trying to add duplicate user")
         conn.close()
 
