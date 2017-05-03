@@ -41,9 +41,9 @@ def refreshData():
     #MyLogger.log(indexheaders)
     #for row in alldata:
     #    MyLogger.log(row)
-    MyLogger.log('check for table existance')
-    if not DBHelper.isTableExist():
-        MyLogger.log("table not exists")
-        DBHelper.createTable()
+    #MyLogger.log('check for table existance')
+    #if not DBHelper.isTableExist():
+        #MyLogger.log("table not exists")
+        #DBHelper.createTable()
 
     return IPOHelper.insertNewIPOs(alldata)
