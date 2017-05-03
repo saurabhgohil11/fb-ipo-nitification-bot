@@ -28,9 +28,15 @@ def initScheduler():
         scheduler.start()
         scheduler.add_job(
             func=startNotifier,
-            trigger=IntervalTrigger(hours=12,start_date='2017-04-22 00:08:00',timezone='Asia/Calcutta'),
-            id='notifiying_job',
-            name='Notifiy every twenty seconds',
+            trigger=IntervalTrigger(hours=24,start_date='2017-05-04 08:40:00',timezone='Asia/Calcutta'),
+            id='notifiying_job_morning',
+            name='Notifiy at 0840AM',
+            replace_existing=True)
+        scheduler.add_job(
+            func=startNotifier,
+            trigger=IntervalTrigger(hours=24,start_date='2017-05-04 13:52:00',timezone='Asia/Calcutta'),
+            id='notifiying_job_noon',
+            name='Notifiy at 0152PM',
             replace_existing=True)
         # Shut down the scheduler when exiting the app
         atexit.register(lambda: scheduler.shutdown())
