@@ -25,6 +25,9 @@ def getLast10IPO():
 def insertNewIPOs(ipoList):
     newIPOList = []
     for x in ipoList:
+        ipoOpenDate = x[1]
+        if not ipoOpenDate:
+            continue
         y = DBHelper.hasIPO(x)
         if not y: #new ipo
             DBHelper.insertIPO(x)

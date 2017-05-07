@@ -12,7 +12,7 @@ def refreshData():
     page = urlopen(req).read()
     soup = BeautifulSoup(page, 'html.parser')
     
-    x = soup.find('table', { "class" : "table-bordered" })
+    x = soup.find('table', {"class": "table-bordered" })
     headers = x.find_all('th')
     indexheaders = []
     for header in headers:
