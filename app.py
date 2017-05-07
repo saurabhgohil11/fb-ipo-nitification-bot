@@ -53,8 +53,11 @@ def verify():
         if not request.args.get("hub.verify_token") == os.environ["VERIFY_TOKEN"]:
             return "Verification token mismatch", 403
         return request.args["hub.challenge"], 200
-
-    return "Hello world", 200
+    privacy_policy = '''Last updated: 7th May 2017.
+IPO Notifier ("us", "we", or "our") operates this chat bot (the "Site"). This page informs you of our policies regarding the collection, use and disclosure of Personal Information we receive from users of the Site.
+We use your Personal Information (i.e fb user id) only for providing and improving the Site. By using the service, you agree to the collection and use of information in accordance with this policy. We do not share this info to anyone. We do not ask about any of your personal Information anywhere. We might log your searches in future but it will be used to improve our services only. If you have any questions about this Privacy Policy, please contact us.
+'''
+    return privacy_policy, 200
 
 
 @app.route('/', methods=['POST'])
