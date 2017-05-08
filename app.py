@@ -76,10 +76,12 @@ def webhook():
 
                     sender_id = messaging_event["sender"]["id"]        # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    timestamp = messaging_event["timestamp"]
                     if not (messaging_event["message"]).get("text"):
                         continue
                     message_text = messaging_event["message"]["text"]  # the message's text
-                    DBHelper.insertUser(sender_id)
+                    if not DBHelper.isUserExists(sender_id):
+                        DBHelper.insertUser(sender_id,timestamp)
                     responseList = formResponse(sender_id,message_text)
                     for text in responseList:
                         send_message(sender_id, text)
@@ -93,6 +95,9 @@ def webhook():
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
                     sender_id = messaging_event["sender"]["id"]  # the facebook ID of the person sending you the message
                     recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    timestamp = messaging_event["timestamp"]
+                    if not DBHelper.isUserExists(sender_id):
+                        DBHelper.insertUser(sender_id, timestamp)
                     payload = messaging_event["postback"]["payload"]  # the message's text
                     responseList = formResponse(sender_id, payload)
                     for text in responseList:
@@ -135,7 +140,7 @@ Do you want to Get Notified when new IPO is going to be listed on BSE or NSE?'''
 2. Today's IPO, Current IPO
 3. Recent IPO
 4. Help.'''
-        jsonFormat = generateJSONResposneForPostbackButtons(message1,'Yes, Subscribe Me', 'Subscribe',"No, Don'y Notify Me",'Unsubscribe')
+        jsonFormat = generateJSONResposneForPostbackButtons(message1,'Yes, Subscribe Me', 'Subscribe',"No, Don't Notify Me",'Unsubscribe')
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)
         responseList.append(jsonFormat)

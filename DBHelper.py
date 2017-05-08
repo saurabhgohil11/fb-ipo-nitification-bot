@@ -126,7 +126,7 @@ def insertIPO(ipo):
         conn.close()
 
 ##TODO if user exists remove him
-def insertUser(user_id):
+def insertUser(user_id,timestamp):
     # conn = sqlite3.connect(DB_PATH)
     conn = psycopg2.connect(
         database=url.path[1:],
@@ -137,7 +137,7 @@ def insertUser(user_id):
     )
     c = conn.cursor()
     try:
-        insert_stmt = "INSERT INTO USERLIST VALUES ('%s','','','','','',0)" % (user_id)
+        insert_stmt = "INSERT INTO USERLIST VALUES ('%s','%s','','','','',0)" % (user_id,timestamp)
         c.execute(insert_stmt)
         conn.commit()
         MyLogger.log("user inserted successfully")
@@ -197,7 +197,7 @@ def updateuser(user_id,subscriptionVal):
         port=url.port
     )
     c = conn.cursor()
-    update_stmt = "UPDATE USERLIST SET IS_ACTIVE = '%s' WHERE USER_ID = '%s'" % (user_id, subscriptionVal)
+    update_stmt = "UPDATE USERLIST SET IS_ACTIVE = '%s' WHERE USER_ID = '%s'" % (subscriptionVal, user_id)
     c.execute(update_stmt)
     conn.commit()
     conn.close()
@@ -221,6 +221,25 @@ def isSubscribed(user_id):
         return True
     else:
         return False
+
+def isUserExists(user_id):
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
+    c = conn.cursor()
+    update_stmt = "SELECT * FROM USERLIST WHERE USER_ID = '%s'" % (user_id)
+    c.execute(update_stmt)
+    a = c.rowcount
+    conn.close()
+    if a == 0:
+        return False
+    else:
+        return True
 
 
 def executeSelect(select_stmt):
