@@ -157,10 +157,10 @@ Do you want to Get Notified when new IPO is going to be listed on BSE or NSE?'''
 2. Today's IPO, Current IPO
 3. Recent IPO
 4. ipo 'Company name'.'''
-        message2 = "To get latest IPO updates type 'Subscribe'."
+        message2 = "To get latest IPO update notifications type 'Subscribe'."
         isSubscribed = DBHelper.isSubscribed(sender_id)
         if isSubscribed:
-            message2 = "To unsubscribe type 'Unsubscribe'."
+            message2 = "To unsubscribe from getting IPO update notifications type 'Unsubscribe'."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)

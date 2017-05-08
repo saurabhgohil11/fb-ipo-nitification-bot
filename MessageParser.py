@@ -9,7 +9,7 @@ UNSUBSCRIBE = 6
 SUBSCRIBE = 7
 HELP = 8
 
-greeting_keywords = ['hi', 'hello', 'hey', 'whats', 'wassup']
+greeting_keywords = ['hi', 'hello', 'hey', 'whats', 'wassup','get started']
 curr_keywords = ["upcoming"]
 all_keywords = ["ipo list", "list", "all"]
 today_keyword = ["today", "current"]

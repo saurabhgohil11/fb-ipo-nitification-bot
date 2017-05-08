@@ -213,14 +213,14 @@ def isSubscribed(user_id):
         port=url.port
     )
     c = conn.cursor()
-    update_stmt = "SELECT IS_ACTIVE FROM USERLIST WHERE USER_ID = '%s'" % (user_id)
-    c.execute(update_stmt)
-    a = c.fetchone()
+    select_stmt = "SELECT IS_ACTIVE FROM USERLIST WHERE USER_ID = '%s' AND IS_ACTIVE = '1'" % (user_id)
+    c.execute(select_stmt)
+    a = c.rowcount
     conn.close()
-    if a[0] == '1':
-        return True
-    else:
+    if a == 0:
         return False
+    else:
+        return True
 
 def isUserExists(user_id):
     # conn = sqlite3.connect(DB_PATH)
@@ -232,8 +232,8 @@ def isUserExists(user_id):
         port=url.port
     )
     c = conn.cursor()
-    update_stmt = "SELECT * FROM USERLIST WHERE USER_ID = '%s'" % (user_id)
-    c.execute(update_stmt)
+    select_stmt = "SELECT * FROM USERLIST WHERE USER_ID = '%s'" % (user_id)
+    c.execute(select_stmt)
     a = c.rowcount
     conn.close()
     if a == 0:
