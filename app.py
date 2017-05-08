@@ -91,7 +91,12 @@ def webhook():
                     pass
 
                 if messaging_event.get("postback"):  # user clicked/tapped "postback" button in earlier message
-                    pass
+                    sender_id = messaging_event["sender"]["id"]  # the facebook ID of the person sending you the message
+                    recipient_id = messaging_event["recipient"]["id"]  # the recipient's ID, which should be your page's facebook ID
+                    payload = messaging_event["postback"]["payload"]  # the message's text
+                    responseList = formResponse(sender_id, payload)
+                    for text in responseList:
+                        send_message(sender_id, text)
 
     return "ok", 200
 
@@ -130,7 +135,7 @@ Do you want to Get Notified when new IPO is going to be listed on BSE or NSE?'''
 2. Today's IPO, Current IPO
 3. Recent IPO
 4. Help.'''
-        jsonFormat = generateJSONResposneForPostbackButtons(message1,'Yes, Subscribe Me','No, UnSubscribe Me')
+        jsonFormat = generateJSONResposneForPostbackButtons(message1,'Yes, Subscribe Me', 'Subscribe',"No, Don'y Notify Me",'Unsubscribe')
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)
         responseList.append(jsonFormat)
@@ -247,7 +252,7 @@ def generateJSONResposneForIPO(ipoData):
         }
     })
 
-def generateJSONResposneForPostbackButtons(msg,button1,button2):
+def generateJSONResposneForPostbackButtons(msg,button1,payload1,button2,payload2):
     return json.dumps({
         "attachment": {
             "type": "template",
@@ -258,12 +263,12 @@ def generateJSONResposneForPostbackButtons(msg,button1,button2):
                     {
                         "type": "postback",
                         "title": button1,
-                        "payload":"USER_DEFINED_PAYLOAD"
+                        "payload": payload1
                     },
                     {
                         "type": "postback",
                         "title": button2,
-                        "payload": "USER_DEFINED_PAYLOAD"
+                        "payload": payload2
                     },
                 ]
             }
