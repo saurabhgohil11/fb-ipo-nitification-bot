@@ -128,7 +128,7 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE.'
         message2 = '''Use Following Keywords for your task.
 1. Upcoming IPO
 2. Today's IPO, Current IPO
-3. IPO List
+3. Recent IPO
 4. ipo 'Company name'.'''
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
@@ -145,7 +145,7 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE.'
         message1 = '''Use Following Keywords for your task.
 1. Upcoming IPO
 2. Today's IPO, Current IPO
-3. IPO List
+3. Recent IPO
 4. ipo 'Company name'.'''
         message2 = "To unsubscribe type 'Remove Me' and delete this chat."
         jsonFormat = generateJSONResposneForText(message1)
