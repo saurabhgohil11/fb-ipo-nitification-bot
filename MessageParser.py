@@ -1,3 +1,4 @@
+UNKNOWN_MSG = -1
 GREETING_MSG = 0
 UPCOMING_IPO = 1
 ALL_IPO = 2
@@ -6,8 +7,7 @@ IPO_NAME = 4
 IPO_MONTH = 5
 UNSUBSCRIBE = 6
 SUBSCRIBE = 7
-UNKNOWN_MSG = -1
-HELP = 7
+HELP = 8
 
 greeting_keywords = ['hi', 'hello', 'hey', 'whats', 'wassup']
 curr_keywords = ["upcoming"]
