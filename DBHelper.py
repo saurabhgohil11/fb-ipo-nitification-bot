@@ -137,7 +137,7 @@ def insertUser(user_id):
     )
     c = conn.cursor()
     try:
-        insert_stmt = "INSERT INTO USERLIST VALUES ('%s','','','','','',1)" % (user_id)
+        insert_stmt = "INSERT INTO USERLIST VALUES ('%s','','','','','',0)" % (user_id)
         c.execute(insert_stmt)
         conn.commit()
         MyLogger.log("user inserted successfully")
@@ -187,7 +187,7 @@ def getUserIdList(active):
     MyLogger.log(list)
     return list
 
-def removeuser(user_id):
+def updateuser(user_id,subscriptionVal):
     # conn = sqlite3.connect(DB_PATH)
     conn = psycopg2.connect(
         database=url.path[1:],
@@ -197,11 +197,31 @@ def removeuser(user_id):
         port=url.port
     )
     c = conn.cursor()
-    update_stmt = "UPDATE USERLIST SET IS_ACTIVE = '0' WHERE USER_ID = '%s'" % (user_id)
+    update_stmt = "UPDATE USERLIST SET IS_ACTIVE = '%s' WHERE USER_ID = '%s'" % (user_id, subscriptionVal)
     c.execute(update_stmt)
     conn.commit()
     conn.close()
     return
+
+def isSubscribed(user_id):
+    # conn = sqlite3.connect(DB_PATH)
+    conn = psycopg2.connect(
+        database=url.path[1:],
+        user=url.username,
+        password=url.password,
+        host=url.hostname,
+        port=url.port
+    )
+    c = conn.cursor()
+    update_stmt = "SELECT IS_ACTIVE FROM USERLIST WHERE USER_ID = '%s'" % (user_id)
+    c.execute(update_stmt)
+    a = c.fetchone()
+    conn.close()
+    if a[0] == '1':
+        return True
+    else:
+        return False
+
 
 def executeSelect(select_stmt):
     # conn = sqlite3.connect(DB_PATH)

@@ -4,23 +4,25 @@ ALL_IPO = 2
 TODAYS_IPO = 3
 IPO_NAME = 4
 IPO_MONTH = 5
-REMOVE_ME = 6
+UNSUBSCRIBE = 6
+SUBSCRIBE = 7
 UNKNOWN_MSG = -1
 HELP = 7
 
-grerting_keywords = ['hi', 'hello', 'hey', 'whats', 'wassup']
+greeting_keywords = ['hi', 'hello', 'hey', 'whats', 'wassup']
 curr_keywords = ["upcoming"]
 all_keywords = ["ipo list", "list", "all"]
 today_keyword = ["today", "current"]
 ipo_name = ["ipo"]
 ipo_month = ["month"]
-remove_me_keyword = ["remove me", "unsubscribe"]
+unsubscribe_keyword = ["remove me", "unsubscribe"]
+subscribe_keyword = ["subscribe"]
 help_keyword = ["help"]
 
 
 def parse(text):
     text = text.lower()
-    if any(x in text for x in grerting_keywords):
+    if any(x in text for x in greeting_keywords):
         return GREETING_MSG
     elif any(x in text for x in curr_keywords):
         return UPCOMING_IPO
@@ -32,8 +34,10 @@ def parse(text):
         return IPO_NAME
     elif any(x in text for x in ipo_month):
         return IPO_MONTH
-    elif any(x in text for x in remove_me_keyword):
-        return REMOVE_ME
+    elif any(x in text for x in unsubscribe_keyword):
+        return UNSUBSCRIBE
+    elif any(x in text for x in subscribe_keyword):
+        return SUBSCRIBE
     elif any(x in text for x in help_keyword):
         return HELP
     else:

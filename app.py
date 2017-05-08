@@ -123,14 +123,14 @@ def formResponse(sender_id,text):
     responseList = []
     if msg_type==MessageParser.GREETING_MSG:
         message1 = '''Hello, Welcome to IPO Notifier. 
-We will message you on when ever a new IPO is going to be listed on BSE or NSE.'''
-        
-        message2 = '''Use Following Keywords for your task.
+Do you want to Get Notified when new IPO is going to be listed on BSE or NSE?'''
+
+        message2 = '''You can use following Keywords to get IPO details.
 1. Upcoming IPO
 2. Today's IPO, Current IPO
 3. Recent IPO
 4. Help.'''
-        jsonFormat = generateJSONResposneForText(message1)
+        jsonFormat = generateJSONResposneForPostbackButtons(message1,'Yes, Subscribe Me','No, UnSubscribe Me')
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)
         responseList.append(jsonFormat)
@@ -147,7 +147,10 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE.'
 2. Today's IPO, Current IPO
 3. Recent IPO
 4. ipo 'Company name'.'''
-        message2 = "To unsubscribe type 'Unsubscribe Me'."
+        message2 = "To get latest IPO updates type 'Subscribe'."
+        isSubscribed = DBHelper.isSubscribed(sender_id)
+        if isSubscribed:
+            message2 = "To unsubscribe type 'Unsubscribe'."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)
@@ -186,9 +189,15 @@ We will message you on when ever a new IPO is going to be listed on BSE or NSE.'
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
 
-    elif msg_type==MessageParser.REMOVE_ME:
-        DBHelper.removeuser(sender_id)
-        message1 = "You are successfully unsubscribed. Ping me any time if you want to subscribe again."
+    elif msg_type==MessageParser.UNSUBSCRIBE:
+        DBHelper.updateuser(sender_id, '0')
+        message1 = "You are successfully unsubscribed. Type 'Subscribe' any time if you want to get updates again."
+        jsonFormat = generateJSONResposneForText(message1)
+        responseList.append(jsonFormat)
+
+    elif msg_type==MessageParser.SUBSCRIBE:
+        DBHelper.updateuser(sender_id, '1')
+        message1 = "You are successfully subscribed. We will notify you for latest IPO news and updates."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
             
@@ -237,6 +246,30 @@ def generateJSONResposneForIPO(ipoData):
             }
         }
     })
+
+def generateJSONResposneForPostbackButtons(msg,button1,button2):
+    return json.dumps({
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": msg,
+                "buttons": [
+                    {
+                        "type": "postback",
+                        "title": button1,
+                        "payload":"USER_DEFINED_PAYLOAD"
+                    },
+                    {
+                        "type": "postback",
+                        "title": button2,
+                        "payload": "USER_DEFINED_PAYLOAD"
+                    },
+                ]
+            }
+        }
+    })
+
 
 def setup_app():
     # All your initialization code
