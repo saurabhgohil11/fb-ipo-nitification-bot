@@ -11,3 +11,4 @@ beautifulsoup4==4.1.3
 pytz
 apscheduler==3.3.0
 psycopg2
+logentries
