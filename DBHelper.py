@@ -48,7 +48,7 @@ def createTable():
     conn.commit()
     conn.close()
 
-    MyLogger.log("Table created successfully")
+    MyLogger.logMsg("Table created successfully")
 
 def createPrefTable():
     conn2 = sqlite3.connect(DB_PATH)
@@ -62,7 +62,7 @@ def createPrefTable():
     c2.execute("INSERT INTO PREFS VALUES ('scheduler_running','0')")
     conn2.commit()
     conn2.close()
-    MyLogger.log("setting scheduler start to 0 ")
+    MyLogger.logMsg("setting scheduler start to 0 ")
 
 
 def isTableExist():
@@ -119,10 +119,10 @@ def insertIPO(ipo):
         insert_stmt = "INSERT INTO IPOLIST VALUES ('%s','%s','%s','%s','%s','%s','%s')" % (ipo[0],ipo[1],ipo[2],ipo[3],ipo[4],ipo[5],ipo[6])
         c.execute(insert_stmt)
         conn.commit()
-        MyLogger.log("ipo "+ ipo[0] +"inserted successfully")
+        MyLogger.logMsg("ipo " + ipo[0] + "inserted successfully")
         conn.close()
     except psycopg2.IntegrityError:
-        MyLogger.log("trying to add duplicate ipo")
+        MyLogger.logMsg("trying to add duplicate ipo")
         conn.close()
 
 ##TODO if user exists remove him
@@ -140,10 +140,10 @@ def insertUser(user_id,timestamp):
         insert_stmt = "INSERT INTO USERLIST VALUES ('%s','%s','','','','',0)" % (user_id,timestamp)
         c.execute(insert_stmt)
         conn.commit()
-        MyLogger.log("user inserted successfully")
+        MyLogger.logMsg("user inserted successfully")
         conn.close()
     except psycopg2.IntegrityError:
-        MyLogger.log("trying to add duplicate user")
+        MyLogger.logMsg("trying to add duplicate user")
         conn.close()
 
 
@@ -181,10 +181,10 @@ def getIPOOpenDateGreaterThanDate(date):
     return executeSelect(select_stmt)
 
 def getUserIdList(active):
-    MyLogger.log("get user id")
+    MyLogger.logMsg("get user id")
     select_stmt = "SELECT USER_ID FROM USERLIST WHERE IS_ACTIVE = '%s'" % (active)
     list = executeSelect(select_stmt)
-    MyLogger.log(list)
+    MyLogger.logMsg(list)
     return list
 
 def updateuser(user_id,subscriptionVal):
@@ -268,7 +268,7 @@ def dropTableIPO():
     )
     conn.execute("DROP TABLE IF EXISTS IPOLIST")
     conn.close()
-    MyLogger.log("Table removed IPO")
+    MyLogger.logMsg("Table removed IPO")
 
 def dropTableUser():
     # conn = sqlite3.connect(DB_PATH)
@@ -281,7 +281,7 @@ def dropTableUser():
     )
     conn.execute("DROP TABLE IF EXISTS USERLIST")
     conn.close()
-    MyLogger.log("Table removed user")
+    MyLogger.logMsg("Table removed user")
 
 def isSchedulerRunning():
     select_stmt = "SELECT * FROM PREFS WHERE NAME = 'scheduler_running'"

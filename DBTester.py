@@ -4,7 +4,7 @@ import MyLogger
 
 
 def startTest():
-    MyLogger.log("start DBTester")
+    MyLogger.logMsg("start DBTester")
     IPOCrawler.refreshData()
     a = DBHelper.isSchedulerRunning()
     DBHelper.schedulerRunning(True)
@@ -20,7 +20,7 @@ def startTest():
     # MyLogger.log("----------Testing 10 IPO-------------")
     # MyLogger.log(app.formResponse("list"))
 
-    MyLogger.log("End DBTester")
+    MyLogger.logMsg("End DBTester")
 
 
 startTest()

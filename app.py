@@ -21,9 +21,9 @@ from apscheduler.triggers.interval import IntervalTrigger
 app = Flask(__name__)
     
 def initScheduler():
-    MyLogger.log("init scheduler"+str(os.getpid()))
+    MyLogger.logMsg("init scheduler" + str(os.getpid()))
     if os.getpid() == 10:
-        MyLogger.log("up starting")
+        MyLogger.logMsg("up starting")
         scheduler = BackgroundScheduler()
         scheduler.start()
         scheduler.add_job(
@@ -42,7 +42,7 @@ def initScheduler():
         atexit.register(lambda: scheduler.shutdown())
 
 def startNotifier():
-    MyLogger.log("startNotifier")
+    MyLogger.logMsg("startNotifier")
     EveryDayNotifier.doNotify()
 
 @app.route('/', methods=['GET'])
@@ -65,7 +65,7 @@ def webhook():
     # endpoint for processing incoming messaging events
 
     data = request.get_json()
-    MyLogger.log(data)  # you may not want to MyLogger.log every incoming message in production, but it's good for testing
+    MyLogger.logMsg(data)  # you may not want to MyLogger.log every incoming message in production, but it's good for testing
 
     if data["object"] == "page":
 
@@ -108,7 +108,7 @@ def webhook():
 
 def send_message(recipient_id, message):
 
-    MyLogger.log("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message))
+    MyLogger.logMsg("sending message to {recipient}: {text}".format(recipient=recipient_id, text=message))
 
     params = {
         "access_token": os.environ["PAGE_ACCESS_TOKEN"]
@@ -125,8 +125,8 @@ def send_message(recipient_id, message):
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
     if r.status_code != 200:
-        MyLogger.log(r.status_code)
-        MyLogger.log(r.text)
+        MyLogger.logMsg(r.status_code)
+        MyLogger.logMsg(r.text)
 
 def formResponse(sender_id,text):
     msg_type = MessageParser.parse(text)

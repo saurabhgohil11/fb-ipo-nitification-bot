@@ -8,13 +8,13 @@ import pytz
 
 
 def doNotify():
-    MyLogger.log("doNotify")
+    MyLogger.logMsg("doNotify")
     # notify for new listings
     newIPOList = IPOCrawler.refreshData()
 
     my_date = datetime.datetime.now(pytz.timezone('Asia/Calcutta'))
     isNoon  = my_date.hour>13
-
+    MyLogger.logMsg("doNotify isNoon : " +str(isNoon));
     if newIPOList:
         notifyIPOswithMsg(newIPOList, "Hey, Seems New IPOs are listed.")
 
@@ -45,7 +45,7 @@ def notifyIPOswithMsg(IPOList, message1,user):
         jsonFormat = app.generateJSONResposneForText(message1)
         subscriberList = DBHelper.getUserIdList("1")
         for user in subscriberList:
-            MyLogger.log("Notifying user :" + user[0])
+            MyLogger.logMsg("Notifying user :" + user[0])
             app.send_message(user[0], jsonFormat)
             for ipoData in IPOList:
                 jsonFormat = app.generateJSONResposneForIPO(ipoData)
