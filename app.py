@@ -132,34 +132,37 @@ def formResponse(sender_id,text):
     msg_type = MessageParser.parse(text)
     responseList = []
     if msg_type==MessageParser.GREETING_MSG:
-        message1 = '''Hello, Welcome to IPO Notifier. 
-Do you want to Get Notified when new IPO is going to be listed on BSE or NSE?'''
-
+        message1 = '''Hello, Welcome to IPO Notifier.'''
         message2 = '''You can use following Keywords to get IPO details.
 1. Upcoming IPO
 2. Today's IPO, Current IPO
 3. Recent IPO
 4. Help.'''
-        jsonFormat = generateJSONResposneForPostbackButtons(message1,'Yes, Subscribe Me', 'Subscribe',"No, Don't Notify Me",'Unsubscribe')
+        jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)
         responseList.append(jsonFormat)
+
+        if not DBHelper.isSubscribed(sender_id):
+            jsonFormat = generateJSONResposneForPostbackButtons(
+                '''Do you want to Get Notified when new IPO is going to be listed on BSE or NSE?''', 'Yes, Subscribe Me',
+                'Subscribe', "No, Don't Notify Me", 'Unsubscribe')
+            responseList.append(jsonFormat)
         
     elif msg_type==MessageParser.UNKNOWN_MSG:
         message1 = "I didn't understand that. Try typing Help :P ."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
+
     
     elif msg_type==MessageParser.HELP:
-        
         message1 = '''Use Following Keywords for your task.
 1. Upcoming IPO
 2. Today's IPO, Current IPO
 3. Recent IPO
 4. ipo 'Company name'.'''
         message2 = "To get latest IPO update notifications type 'Subscribe'."
-        isSubscribed = DBHelper.isSubscribed(sender_id)
-        if isSubscribed:
+        if DBHelper.isSubscribed(sender_id):
             message2 = "To unsubscribe from getting IPO update notifications type 'Unsubscribe'."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
