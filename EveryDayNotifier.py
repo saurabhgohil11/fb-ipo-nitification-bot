@@ -33,7 +33,7 @@ def doNotify():
     if runningList and not isNoon:
         notifyIPOswithMsg(runningList, "Hola, Have you subscribed these Yet?.")
 
-    if not isNoon:
+    if isNoon:
         notifyIPOswithMsg([], "I'm alive.", "1349496018446216")
 
 
