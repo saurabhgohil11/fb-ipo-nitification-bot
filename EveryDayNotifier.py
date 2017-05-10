@@ -13,7 +13,7 @@ def doNotify():
     newIPOList = IPOCrawler.refreshData()
 
     my_date = datetime.datetime.now(pytz.timezone('Asia/Calcutta'))
-    isNoon  = my_date.hour>13
+    isNoon  = my_date.hour > 12
     MyLogger.logMsg("doNotify isNoon : " +str(isNoon));
     if newIPOList:
         notifyIPOswithMsg(newIPOList, "Hey, Seems New IPOs are listed.")
@@ -40,6 +40,7 @@ def doNotify():
 def notifyIPOswithMsg(IPOList, message1,user):
     if user:
         jsonFormat = app.generateJSONResposneForText(message1)
+        MyLogger.logMsg("Notifying admin")
         app.send_message(user, jsonFormat)
     else:
         jsonFormat = app.generateJSONResposneForText(message1)

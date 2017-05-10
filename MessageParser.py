@@ -11,7 +11,7 @@ HELP = 8
 
 greeting_keywords = ['hi', 'hello', 'hey', 'whats', 'wassup','get started']
 curr_keywords = ["upcoming"]
-all_keywords = ["ipo list", "list", "all"]
+all_keywords = ["recent ipo"]
 today_keyword = ["today", "current"]
 ipo_name = ["ipo"]
 ipo_month = ["month"]
