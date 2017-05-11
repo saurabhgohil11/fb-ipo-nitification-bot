@@ -1,4 +1,4 @@
-from app import send_message
+import app
 import DBHelper
 import IPOHelper
 import MyLogger
@@ -27,7 +27,7 @@ def startTest():
     jsonFormat = json.dumps({
         "text": "DBTested see logs"})
     MyLogger.logMsg("Notifying admin")
-    send_message("1349496018446216", jsonFormat)
+    app.send_message("1349496018446216", jsonFormat)
     MyLogger.logMsg("**************End DBTester****************")
 
 
