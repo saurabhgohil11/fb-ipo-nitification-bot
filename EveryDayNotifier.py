@@ -5,7 +5,7 @@ import DBHelper
 import MyLogger
 import datetime
 import pytz
-from time import sleep
+#from time import sleep
 
 def doNotify():
     MyLogger.logMsg("doNotify")
@@ -38,16 +38,16 @@ def doNotify():
 
 
 def notifyIPOswithMsg(IPOList, message1):
-        jsonFormat = app.generateJSONResposneForText(message1)
+        jsonFormatText = app.generateJSONResposneForText(message1)
         subscriberList = DBHelper.getUserIdList("1")
         for user in subscriberList:
             MyLogger.logMsg("Notifying user :" + user[0])
-            app.send_message(user[0], jsonFormat)
-            sleep(3)
+            app.send_message(user[0], jsonFormatText)
+            #sleep(1)
             for ipoData in IPOList:
                 jsonFormat = app.generateJSONResposneForIPO(ipoData)
                 app.send_message(user[0], jsonFormat)
-                sleep(3)
+                #sleep(1)
 
 def notifyAdmin(msg):
     jsonFormat = app.generateJSONResposneForText(msg)
