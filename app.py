@@ -228,7 +228,6 @@ def formResponse(sender_id,text):
     return responseList
 
 
-    
 def generateJSONResposneForText(responsemsg):
     return json.dumps({
         "text": responsemsg

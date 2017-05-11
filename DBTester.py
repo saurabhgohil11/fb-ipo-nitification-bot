@@ -1,7 +1,9 @@
+from app import send_message
 import DBHelper
 import IPOHelper
 import MyLogger
-import app
+import json
+
 
 
 def startTest():
@@ -22,9 +24,10 @@ def startTest():
     MyLogger.logMsg("------subscriberList-------")
     MyLogger.logMsg(subscriberList)
 
-    jsonFormat = app.generateJSONResposneForText("DBTested see logs")
+    jsonFormat = json.dumps({
+        "text": "DBTested see logs"})
     MyLogger.logMsg("Notifying admin")
-    app.send_message("1349496018446216", jsonFormat)
+    send_message("1349496018446216", jsonFormat)
     MyLogger.logMsg("**************End DBTester****************")
 
 
