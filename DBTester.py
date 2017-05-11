@@ -29,6 +29,3 @@ def startTest():
     MyLogger.logMsg("Notifying admin")
     app.send_message("1349496018446216", jsonFormat)
     MyLogger.logMsg("**************End DBTester****************")
-
-
-startTest()
