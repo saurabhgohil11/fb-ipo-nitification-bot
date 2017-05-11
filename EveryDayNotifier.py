@@ -34,15 +34,10 @@ def doNotify():
         notifyIPOswithMsg(runningList, "Hola, Have you subscribed these Yet?.")
 
     if not isNoon:
-        notifyIPOswithMsg([], "I'm alive.", "1349496018446216")
+        notifyAdmin("I'm alive.")
 
 
-def notifyIPOswithMsg(IPOList, message1,user):
-    if user:
-        jsonFormat = app.generateJSONResposneForText(message1)
-        MyLogger.logMsg("Notifying admin")
-        app.send_message(user, jsonFormat)
-    else:
+def notifyIPOswithMsg(IPOList, message1):
         jsonFormat = app.generateJSONResposneForText(message1)
         subscriberList = DBHelper.getUserIdList("1")
         for user in subscriberList:
@@ -51,3 +46,8 @@ def notifyIPOswithMsg(IPOList, message1,user):
             for ipoData in IPOList:
                 jsonFormat = app.generateJSONResposneForIPO(ipoData)
                 app.send_message(user[0], jsonFormat)
+
+def notifyAdmin(msg):
+    jsonFormat = app.generateJSONResposneForText(msg)
+    MyLogger.logMsg("Notifying admin")
+    app.send_message("1349496018446216", jsonFormat)
