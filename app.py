@@ -87,6 +87,9 @@ def webhook():
                     if message_text == "nq3vxTestDB":
                         DBTester.startTest()
                         return "ok", 200
+                    if message_text == "nq3vxNotifyUpcoming":
+                        DBTester.startTest()
+                        return "ok", 200
 
                     responseList = formResponse(sender_id,message_text)
                     for text in responseList:
