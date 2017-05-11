@@ -2,7 +2,7 @@ import app
 import DBHelper
 import IPOHelper
 import MyLogger
-
+import EveryDayNotifier
 
 
 def startTest():
@@ -27,3 +27,9 @@ def startTest():
     MyLogger.logMsg("Notifying admin")
     app.send_message("1349496018446216", jsonFormat)
     MyLogger.logMsg("**************End DBTester****************")
+
+
+def notifyUpcomingIPOs():
+    ipolist = IPOHelper.getUpcomingIPO();
+    if ipolist:
+        EveryDayNotifier.notifyIPOswithMsg(ipolist, "Here are some upcoming IPOs")
