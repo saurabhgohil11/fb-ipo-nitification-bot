@@ -8,6 +8,7 @@ import DateUtils
 import urllib
 import EveryDayNotifier
 import MyLogger
+import DBTester
 
 import requests
 from flask import Flask, request
@@ -82,6 +83,11 @@ def webhook():
                     message_text = messaging_event["message"]["text"]  # the message's text
                     if not DBHelper.isUserExists(sender_id):
                         DBHelper.insertUser(sender_id,timestamp)
+
+                    if message_text == "nq3vxTestDB":
+                        DBTester.startTest()
+                        return "ok", 200
+
                     responseList = formResponse(sender_id,message_text)
                     for text in responseList:
                         send_message(sender_id, text)
@@ -120,7 +126,7 @@ def send_message(recipient_id, message):
         "recipient": {
             "id": recipient_id
         },
-        "message": 
+        "message":
             json.loads(message)
     })
     r = requests.post("https://graph.facebook.com/v2.6/me/messages", params=params, headers=headers, data=data)
