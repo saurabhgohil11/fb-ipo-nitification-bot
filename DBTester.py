@@ -7,20 +7,20 @@ import app
 def startTest():
     MyLogger.logMsg("**************start DBTester*******************")
     openList = IPOHelper.getOpeningTodayIPO()
-    MyLogger.log("------OpenList-------")
-    MyLogger.log(openList)
+    MyLogger.logMsg("------OpenList-------")
+    MyLogger.logMsg(openList)
 
     closeList = IPOHelper.getClosingTodayIPO()
-    MyLogger.log("------closeList-------")
-    MyLogger.log(closeList)
+    MyLogger.logMsg("------closeList-------")
+    MyLogger.logMsg(closeList)
 
     runningList = IPOHelper.getRunningIPO(True)
-    MyLogger.log("------runningList-------")
-    MyLogger.log(runningList)
+    MyLogger.logMsg("------runningList-------")
+    MyLogger.logMsg(runningList)
 
     subscriberList = DBHelper.getUserIdList("1")
-    MyLogger.log("------subscriberList-------")
-    MyLogger.log(subscriberList)
+    MyLogger.logMsg("------subscriberList-------")
+    MyLogger.logMsg(subscriberList)
 
     jsonFormat = app.generateJSONResposneForText("DBTested see logs")
     MyLogger.logMsg("Notifying admin")
