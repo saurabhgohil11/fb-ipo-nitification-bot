@@ -196,10 +196,14 @@ def formResponse(sender_id,text):
         ipolist = IPOHelper.getIPObyName(ipoName)
         if not ipoName:
             ipolist = IPOHelper.getRunningIPO(False)
-            msg1 = "Try ipo 'company name'. By the way here is the running IPO List" 
+            msg1 = "Try ipo 'company name'."
+            msg2 = "By the way here is the running IPO List"
             jsonFormat = generateJSONResposneForText(msg1)
-            responseList.append(msg1)
-        
+            responseList.append(jsonFormat)
+            if not ipolist:
+                jsonFormat = generateJSONResposneForText(msg2)
+                responseList.append(jsonFormat)
+
         for ipoData in ipolist:
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
