@@ -3,7 +3,7 @@ import DBHelper
 import IPOHelper
 import MyLogger
 import EveryDayNotifier
-
+import os
 
 def startTest():
     MyLogger.logMsg("**************start DBTester*******************")
@@ -25,7 +25,7 @@ def startTest():
 
     jsonFormat = app.generateJSONResposneForText("DB Test Done")
     MyLogger.logMsg("Notifying admin")
-    app.send_message("1349496018446216", jsonFormat)
+    app.send_message(os.environ['ADMIN_ID'], jsonFormat)
     MyLogger.logMsg("**************End DBTester****************")
 
 

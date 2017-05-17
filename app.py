@@ -84,10 +84,10 @@ def webhook():
                     if not DBHelper.isUserExists(sender_id):
                         DBHelper.insertUser(sender_id,timestamp)
 
-                    if message_text == "nq3vxTestDB":
+                    if message_text == os.environ['ADMIN_KEY']+"TestDB":
                         DBTester.startTest()
                         return "ok", 200
-                    if message_text == "nq3vxNotifyUpcoming":
+                    if message_text == os.environ['ADMIN_KEY']+"NotifyUpcoming":
                         #DBTester.notifyUpcomingIPOs()
                         return "ok", 200
 

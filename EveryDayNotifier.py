@@ -5,6 +5,7 @@ import DBHelper
 import MyLogger
 import datetime
 import pytz
+import os
 #from time import sleep
 
 def doNotify():
@@ -52,4 +53,4 @@ def notifyIPOswithMsg(IPOList, message1):
 def notifyAdmin(msg):
     jsonFormat = app.generateJSONResposneForText(msg)
     MyLogger.logMsg("Notifying admin")
-    app.send_message("1349496018446216", jsonFormat)
+    app.send_message(os.environ["ADMIN_ID"], jsonFormat)
