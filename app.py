@@ -200,7 +200,7 @@ def formResponse(sender_id,text):
             msg2 = "By the way here is the running IPO List"
             jsonFormat = generateJSONResposneForText(msg1)
             responseList.append(jsonFormat)
-            if not ipolist:
+            if ipolist:
                 jsonFormat = generateJSONResposneForText(msg2)
                 responseList.append(jsonFormat)
 
