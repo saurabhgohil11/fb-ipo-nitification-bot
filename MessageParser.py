@@ -8,10 +8,12 @@ IPO_MONTH = 5
 UNSUBSCRIBE = 6
 SUBSCRIBE = 7
 HELP = 8
+THANKS = 9
 
 greeting_keywords = ['hi', 'hello', 'hey', 'whats', 'wassup','get started']
 curr_keywords = ["upcoming"]
 all_keywords = ["recent ipo"]
+thanks_keywords = ['thank you','thanks']
 today_keyword = ["today", "current"]
 ipo_name = ["ipo"]
 ipo_month = ["month"]
@@ -40,6 +42,8 @@ def parse(text):
         return SUBSCRIBE
     elif any(x in text for x in help_keyword):
         return HELP
+    elif any(x in text for x in thanks_keywords):
+        return THANKS
     else:
         return UNKNOWN_MSG
 

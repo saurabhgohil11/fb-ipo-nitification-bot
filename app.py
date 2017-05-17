@@ -143,10 +143,10 @@ def formResponse(sender_id,text):
     if msg_type==MessageParser.GREETING_MSG:
         message1 = '''Hello, Welcome to IPO Notifier.'''
         message2 = '''You can use following Keywords to get IPO details.
-1. Upcoming IPO
-2. Today's IPO, Current IPO
-3. Recent IPO
-4. Help.'''
+- Upcoming IPO
+- Today's IPO, Current IPO
+- Recent IPO
+- Help.'''
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
         jsonFormat = generateJSONResposneForText(message2)
@@ -166,10 +166,10 @@ def formResponse(sender_id,text):
     
     elif msg_type==MessageParser.HELP:
         message1 = '''Use Following Keywords for your task.
-1. Upcoming IPO
-2. Today's IPO, Current IPO
-3. Recent IPO
-4. ipo 'Company name'.'''
+- Upcoming IPO
+- Current IPO
+- Recent IPO
+- ipo 'Company name'.'''
         message2 = "To get latest IPO update notifications type 'Subscribe'."
         if DBHelper.isSubscribed(sender_id):
             message2 = "To unsubscribe from getting IPO update notifications type 'Unsubscribe'."
@@ -217,13 +217,19 @@ def formResponse(sender_id,text):
 
     elif msg_type==MessageParser.UNSUBSCRIBE:
         DBHelper.updateuser(sender_id, '0')
-        message1 = "You are successfully unsubscribed. Type 'Subscribe' any time if you want to get updates again."
+        message1 = "We're sad to see you go. You can type 'Subscribe' any time if you want to get updates again."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
 
     elif msg_type==MessageParser.SUBSCRIBE:
         DBHelper.updateuser(sender_id, '1')
         message1 = "You are successfully subscribed. We will notify you for latest IPO news and updates."
+        jsonFormat = generateJSONResposneForText(message1)
+        responseList.append(jsonFormat)
+
+    elif msg_type==MessageParser.THANKS:
+        DBHelper.updateuser(sender_id, '1')
+        message1 = "Always happy to serve."
         jsonFormat = generateJSONResposneForText(message1)
         responseList.append(jsonFormat)
             
