@@ -88,7 +88,7 @@ def webhook():
                         DBTester.startTest()
                         return "ok", 200
                     if message_text == os.environ['ADMIN_KEY']+"NotifyUpcoming":
-                        #DBTester.notifyUpcomingIPOs()
+                        DBTester.notifyUpcomingIPOs()
                         return "ok", 200
 
                     responseList = formResponse(sender_id,message_text)
