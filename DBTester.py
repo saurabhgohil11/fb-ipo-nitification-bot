@@ -32,4 +32,4 @@ def startTest():
 def notifyUpcomingIPOs():
     ipolist = IPOHelper.getUpcomingIPO();
     if ipolist:
-        #EveryDayNotifier.notifyIPOswithMsg(ipolist, "Here are some upcoming IPOs")
+        EveryDayNotifier.notifyIPOswithMsg(ipolist, "Here are some upcoming IPOs")
