@@ -27,7 +27,7 @@ def refreshData():
         link = row.find('a').get('href')
         rowdata = []
         for col in cols:
-            datatoInsert = col.get_text().upper()
+            datatoInsert = col.get_text().upper().replace("'","") #replcae single quote to handle sql injection
             try:
                 d = datetime.strptime(datatoInsert, "%b %d, %Y")
                 datatoInsert = d.strftime('%Y-%m-%d')
