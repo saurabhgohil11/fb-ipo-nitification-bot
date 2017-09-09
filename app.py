@@ -88,6 +88,7 @@ def webhook():
                         DBTester.startTest()
                         return "ok", 200
                     if message_text == os.environ['ADMIN_KEY']+"NotifyUpcoming":
+                        #this code notifies infinetly check it before use it
                         #DBTester.notifyUpcomingIPOs()
                         return "ok", 200
 
