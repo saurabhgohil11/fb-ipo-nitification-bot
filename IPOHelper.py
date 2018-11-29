@@ -35,6 +35,5 @@ def insertNewIPOs(ipoList):
         elif tuple(x)!=y[0]: #new data found for existing ipo
             DBHelper.updateIPO(x)
             newIPOList.append(x)
-    newIPOList = []
     return newIPOList
 
