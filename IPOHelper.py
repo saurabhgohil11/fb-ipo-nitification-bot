@@ -19,8 +19,8 @@ def getIPObyDate(date):
 def getUpcomingIPO():
     return DBHelper.getIPOOpenDateGreaterThanDate(DateUtils.getTodaysDate())
     
-def getLast10IPO():
-    return DBHelper.getLast10IPO()
+def getLast6IPO():
+    return DBHelper.getLast6IPO()
 
 def insertNewIPOs(ipoList):
     newIPOList = []
