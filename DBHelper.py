@@ -6,6 +6,14 @@ import urlparse
 
 DB_PATH = "ipocache.db"
 
+WEBINDEX_COMPANY = 0
+WEBINDEX_OPEN_DATE = 2
+WEBINDEX_CLOSE_DATE = 3
+WEBINDEX_OFFER_PRICE = 4
+WEBINDEX_ISSUE_TYPE = 1  #deprecated
+WEBINDEX_ISSUE_SIZE_CR = 5
+WEBINDEX_LINK = 6
+
 urlparse.uses_netloc.append("postgres")
 url = urlparse.urlparse(os.environ["DATABASE_URL"])
 
@@ -86,7 +94,7 @@ def isTableExist():
         return 0
 
 def hasIPO(ipoData):
-    select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[0], ipoData[1])
+    select_stmt = "SELECT * FROM IPOLIST WHERE COMPANY = '%s' AND OPEN_DATE = '%s'" % (ipoData[WEBINDEX_COMPANY], ipoData[WEBINDEX_OPEN_DATE])
     return executeSelect(select_stmt)
 
 def updateIPO(ipoData):
@@ -99,7 +107,7 @@ def updateIPO(ipoData):
         port=url.port
     )
     c = conn.cursor()
-    update_stmt = """UPDATE IPOLIST SET CLOSE_DATE = '%s' ,OFFER_PRICE = '%s',ISSUE_TYPE = '%s',ISSUE_SIZE_CR = '%s',LINK = '%s' WHERE COMPANY= '%s' AND OPEN_DATE = '%s'""" % (ipoData[2],ipoData[3],ipoData[4],ipoData[5],ipoData[6],ipoData[0],ipoData[1])
+    update_stmt = """UPDATE IPOLIST SET CLOSE_DATE = '%s' ,OFFER_PRICE = '%s',ISSUE_TYPE = '%s',ISSUE_SIZE_CR = '%s',LINK = '%s' WHERE COMPANY= '%s' AND OPEN_DATE = '%s'""" % (ipoData[WEBINDEX_CLOSE_DATE],ipoData[WEBINDEX_OFFER_PRICE],ipoData[WEBINDEX_ISSUE_TYPE],ipoData[WEBINDEX_ISSUE_SIZE_CR],ipoData[WEBINDEX_LINK],ipoData[WEBINDEX_COMPANY],ipoData[WEBINDEX_OPEN_DATE]))
     c.execute(update_stmt)
     conn.commit()
     conn.close()
