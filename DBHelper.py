@@ -155,8 +155,8 @@ def insertUser(user_id,timestamp):
         conn.close()
 
 
-def getLast10IPO():
-    select_stmt = "SELECT * FROM IPOLIST ORDER BY OPEN_DATE DESC LIMIT 10"
+def getLast6IPO():
+    select_stmt = "SELECT * FROM IPOLIST ORDER BY OPEN_DATE DESC LIMIT 6"
     return executeSelect(select_stmt)
 
 #Provide IPO Name in UPPER CASE ONLY
