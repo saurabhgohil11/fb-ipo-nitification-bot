@@ -107,7 +107,7 @@ def updateIPO(ipoData):
         port=url.port
     )
     c = conn.cursor()
-    update_stmt = """UPDATE IPOLIST SET CLOSE_DATE = '%s' ,OFFER_PRICE = '%s',ISSUE_TYPE = '%s',ISSUE_SIZE_CR = '%s',LINK = '%s' WHERE COMPANY= '%s' AND OPEN_DATE = '%s'""" % (ipoData[WEBINDEX_CLOSE_DATE],ipoData[WEBINDEX_OFFER_PRICE],ipoData[WEBINDEX_ISSUE_TYPE],ipoData[WEBINDEX_ISSUE_SIZE_CR],ipoData[WEBINDEX_LINK],ipoData[WEBINDEX_COMPANY],ipoData[WEBINDEX_OPEN_DATE]))
+    update_stmt = """UPDATE IPOLIST SET CLOSE_DATE = '%s' ,OFFER_PRICE = '%s',ISSUE_TYPE = '%s',ISSUE_SIZE_CR = '%s',LINK = '%s' WHERE COMPANY= '%s' AND OPEN_DATE = '%s'""" % (ipoData[WEBINDEX_CLOSE_DATE],ipoData[WEBINDEX_OFFER_PRICE],ipoData[WEBINDEX_ISSUE_TYPE],ipoData[WEBINDEX_ISSUE_SIZE_CR],ipoData[WEBINDEX_LINK],ipoData[WEBINDEX_COMPANY],ipoData[WEBINDEX_OPEN_DATE])
     c.execute(update_stmt)
     conn.commit()
     conn.close()
