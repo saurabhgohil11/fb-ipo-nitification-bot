@@ -5,8 +5,7 @@ import MyLogger
 from datetime import datetime
 import IPOHelper
 
-
-req = Request("http://www.chittorgarh.com/ipo/ipo_list.asp", headers={'User-Agent': 'Mozilla/5.0'})
+req = Request("https://www.chittorgarh.com/ipo/ipo_list.asp?a=mainline", headers={'User-Agent': 'Mozilla/5.0'})
 
 def refreshData():
     page = urlopen(req).read()
