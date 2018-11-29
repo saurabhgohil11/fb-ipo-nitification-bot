@@ -124,10 +124,10 @@ def insertIPO(ipo):
     )
     c = conn.cursor()
     try:
-        insert_stmt = "INSERT INTO IPOLIST VALUES ('%s','%s','%s','%s','%s','%s','%s')" % (ipo[0],ipo[1],ipo[2],ipo[3],ipo[4],ipo[5],ipo[6])
+        insert_stmt = "INSERT INTO IPOLIST VALUES ('%s','%s','%s','%s','%s','%s','%s')" % (ipo[WEBINDEX_COMPANY],ipo[WEBINDEX_OPEN_DATE],ipo[WEBINDEX_CLOSE_DATE],ipo[WEBINDEX_OFFER_PRICE],ipo[WEBINDEX_ISSUE_TYPE],ipo[WEBINDEX_ISSUE_SIZE_CR],ipo[WEBINDEX_LINK])
         c.execute(insert_stmt)
         conn.commit()
-        MyLogger.logMsg("ipo " + ipo[0] + "inserted successfully")
+        MyLogger.logMsg("ipo " + ipo[WEBINDEX_COMPANY] + "inserted successfully")
         conn.close()
     except psycopg2.IntegrityError:
         MyLogger.logMsg("trying to add duplicate ipo")
