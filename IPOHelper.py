@@ -31,9 +31,15 @@ def insertNewIPOs(ipoList):
         y = DBHelper.hasIPO(x)
         if not y: #new ipo
             DBHelper.insertIPO(x)
+            x[1]=x[2]  #temp fix for new ipo notification
+            x[2]=x[3]
+            x[3]=x[4]
             newIPOList.append(x)
         elif tuple(x)!=y[0]: #new data found for existing ipo
             DBHelper.updateIPO(x)
+            x[1]=x[2]  #temp fix for new ipo notification
+            x[2]=x[3]
+            x[3]=x[4]
             newIPOList.append(x)
     return newIPOList
 
