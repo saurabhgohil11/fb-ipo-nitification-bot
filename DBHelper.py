@@ -9,10 +9,10 @@ DB_PATH = "ipocache.db"
 WEBINDEX_COMPANY = 0
 WEBINDEX_OPEN_DATE = 2
 WEBINDEX_CLOSE_DATE = 3
-WEBINDEX_OFFER_PRICE = 4
+WEBINDEX_OFFER_PRICE = 5
 WEBINDEX_ISSUE_TYPE = 1  #deprecated
-WEBINDEX_ISSUE_SIZE_CR = 5
-WEBINDEX_LINK = 6
+WEBINDEX_ISSUE_SIZE_CR = 6
+WEBINDEX_LINK = 7
 
 urlparse.uses_netloc.append("postgres")
 url = urlparse.urlparse(os.environ["DATABASE_URL"])
