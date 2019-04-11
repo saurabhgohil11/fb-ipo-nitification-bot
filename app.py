@@ -187,7 +187,7 @@ def formResponse(sender_id,text):
             responseList.append(jsonFormat)
         
     elif msg_type==MessageParser.ALL_IPO:
-        ipolist = IPOHelper.getLast10IPO()
+        ipolist = IPOHelper.getLast6IPO()
         for ipoData in ipolist:
             jsonFormat = generateJSONResposneForIPO(ipoData)
             responseList.append(jsonFormat)
